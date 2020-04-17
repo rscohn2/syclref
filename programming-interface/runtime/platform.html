@@ -1,0 +1,231 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>class platform &#8212; DPC++ Reference  documentation</title>
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/language_data.js"></script>
+    <link rel="shortcut icon" href="../../_static/favicons.png"/>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Context" href="context.html" />
+    <link rel="prev" title="Device Selector" href="device-selector.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  <div class="document">
+    
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../index.html">DPC++ Reference</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../programming-model/index.html">Programming Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../language/index.html">Language</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Programming Interface</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../index.html#header-file">Header File</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../index.html#namespaces">Namespaces</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html#class-descriptions">Class Descriptions</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="index.html">Runtime Classes</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="device-selector.html">Device Selector</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">class platform</a></li>
+<li class="toctree-l4"><a class="reference internal" href="context.html">Context</a></li>
+<li class="toctree-l4"><a class="reference internal" href="device.html">Device</a></li>
+<li class="toctree-l4"><a class="reference internal" href="queue.html">Queue</a></li>
+<li class="toctree-l4"><a class="reference internal" href="event.html">Event</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../data/index.html">Data Access</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../parallelism/index.html">Expressing Parallelism</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../error-handling/index.html">Error Handling</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../stream.html">Stream</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../vec-and-swizzled-vec.html">Vec and Swizzled Vec</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../built-in-types-&amp;amp-functions.html">Built-in Types &amp; Functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../property-interface.html">Property Interface</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../version.html">Version</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../notices-and-disclaimers.html">Notices and Disclaimers</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.html">Programming Interface</a><ul>
+  <li><a href="index.html">Runtime Classes</a><ul>
+      <li>Previous: <a href="device-selector.html" title="previous chapter">Device Selector</a></li>
+      <li>Next: <a href="context.html" title="next chapter">Context</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="class-platform">
+<span id="platform"></span><h1>class platform<a class="headerlink" href="#class-platform" title="Permalink to this headline">¶</a></h1>
+<p class="rubric">Details</p>
+<dl class="cpp class">
+<dt id="_CPPv48platform">
+<span id="_CPPv38platform"></span><span id="_CPPv28platform"></span><em class="property">class </em><code class="sig-name descname">platform</code><a class="headerlink" href="#_CPPv48platform" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p class="rubric">Constructors</p>
+<dl class="cpp function">
+<dt id="_CPPv4N8platform8platformEv">
+<span id="_CPPv3N8platform8platformEv"></span><span id="_CPPv2N8platform8platformEv"></span><span id="platform::platform"></span><code class="sig-name descname">platform</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N8platform8platformEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt id="_CPPv4N8platform8platformE14cl_platform_id">
+<span id="_CPPv3N8platform8platformE14cl_platform_id"></span><span id="_CPPv2N8platform8platformE14cl_platform_id"></span><span id="platform::platform__cl_platform_id"></span><em class="property">explicit</em> <code class="sig-name descname">platform</code><span class="sig-paren">(</span>cl_platform_id <em>platformID</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N8platform8platformE14cl_platform_id" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt id="_CPPv4N8platform8platformERK15device_selector">
+<span id="_CPPv3N8platform8platformERK15device_selector"></span><span id="_CPPv2N8platform8platformERK15device_selector"></span><span id="platform::platform__device_selectorCR"></span><em class="property">explicit</em> <code class="sig-name descname">platform</code><span class="sig-paren">(</span><em class="property">const</em> device_selector &amp;<em>deviceSelector</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N8platform8platformERK15device_selector" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Constructor</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>deviceSelector</strong> – a description</p></li>
+<li><p><strong>platformID</strong> – a description</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt id="_CPPv4NK8platform3getEv">
+<span id="_CPPv3NK8platform3getEv"></span><span id="_CPPv2NK8platform3getEv"></span><span id="platform::getC"></span>cl_platform_id <code class="sig-name descname">get</code><span class="sig-paren">(</span><span class="sig-paren">)</span> <em class="property">const</em><a class="headerlink" href="#_CPPv4NK8platform3getEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt id="_CPPv4NK8platform11get_devicesEN4info11device_typeE">
+<span id="_CPPv3NK8platform11get_devicesEN4info11device_typeE"></span><span id="_CPPv2NK8platform11get_devicesEN4info11device_typeE"></span><span id="platform::get_devices__info::device_typeC"></span><a class="reference internal" href="../../language/index.html#_CPPv4I00E12vector_class" title="vector_class">vector_class</a>&lt;<a class="reference internal" href="device.html#_CPPv46device" title="device">device</a>&gt; <code class="sig-name descname">get_devices</code><span class="sig-paren">(</span>info::device_type = info::device_type::all<span class="sig-paren">)</span> <em class="property">const</em><a class="headerlink" href="#_CPPv4NK8platform11get_devicesEN4info11device_typeE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt id="_CPPv4I_N4info8platformEENK8platform8get_infoEN4info12param_traitsIN4info8platformE5paramE11return_typeEv">
+<span id="_CPPv3I_N4info8platformEENK8platform8get_infoEv"></span><span id="_CPPv2I_N4info8platformEENK8platform8get_infoEv"></span>template&lt;info::platform <code class="sig-name descname">param</code>&gt;<br /><em class="property">typename</em> info::param_traits&lt;info::platform, <a class="reference internal" href="#_CPPv4I_N4info8platformEENK8platform8get_infoEN4info12param_traitsIN4info8platformE5paramE11return_typeEv" title="platform::get_info::param">param</a>&gt;::return_type <code class="sig-name descname">get_info</code><span class="sig-paren">(</span><span class="sig-paren">)</span> <em class="property">const</em><a class="headerlink" href="#_CPPv4I_N4info8platformEENK8platform8get_infoEN4info12param_traitsIN4info8platformE5paramE11return_typeEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt id="_CPPv4NK8platform13has_extensionERK12string_class">
+<span id="_CPPv3NK8platform13has_extensionERK12string_class"></span><span id="_CPPv2NK8platform13has_extensionERK12string_class"></span><span id="platform::has_extension__string_classCRC"></span>bool <code class="sig-name descname">has_extension</code><span class="sig-paren">(</span><em class="property">const</em> <a class="reference internal" href="../../language/index.html#_CPPv412string_class" title="string_class">string_class</a> &amp;<em>extension</em><span class="sig-paren">)</span> <em class="property">const</em><a class="headerlink" href="#_CPPv4NK8platform13has_extensionERK12string_class" title="Permalink to this definition">¶</a><br /></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt id="_CPPv4NK8platform7is_hostEv">
+<span id="_CPPv3NK8platform7is_hostEv"></span><span id="_CPPv2NK8platform7is_hostEv"></span><span id="platform::is_hostC"></span>bool <code class="sig-name descname">is_host</code><span class="sig-paren">(</span><span class="sig-paren">)</span> <em class="property">const</em><a class="headerlink" href="#_CPPv4NK8platform7is_hostEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt id="_CPPv4N8platform13get_platformsEv">
+<span id="_CPPv3N8platform13get_platformsEv"></span><span id="_CPPv2N8platform13get_platformsEv"></span><span id="platform::get_platforms"></span><em class="property">static</em> <a class="reference internal" href="../../language/index.html#_CPPv4I00E12vector_class" title="vector_class">vector_class</a>&lt;<a class="reference internal" href="#_CPPv48platform" title="platform">platform</a>&gt; <code class="sig-name descname">get_platforms</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N8platform13get_platformsEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+    <div class="clearer"></div>
+  </div>
+    <div class="footer">
+      &copy;2020, Intel.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.0.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../../_sources/programming-interface/runtime/platform.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

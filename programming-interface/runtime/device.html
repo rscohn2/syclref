@@ -1,0 +1,582 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Device &#8212; DPC++ Reference  documentation</title>
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/language_data.js"></script>
+    <link rel="shortcut icon" href="../../_static/favicons.png"/>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Queue" href="queue.html" />
+    <link rel="prev" title="Context" href="context.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  <div class="document">
+    
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../index.html">DPC++ Reference</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../programming-model/index.html">Programming Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../language/index.html">Language</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Programming Interface</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../index.html#header-file">Header File</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../index.html#namespaces">Namespaces</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html#class-descriptions">Class Descriptions</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="index.html">Runtime Classes</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="device-selector.html">Device Selector</a></li>
+<li class="toctree-l4"><a class="reference internal" href="platform.html">class platform</a></li>
+<li class="toctree-l4"><a class="reference internal" href="context.html">Context</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Device</a></li>
+<li class="toctree-l4"><a class="reference internal" href="queue.html">Queue</a></li>
+<li class="toctree-l4"><a class="reference internal" href="event.html">Event</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../data/index.html">Data Access</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../parallelism/index.html">Expressing Parallelism</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../error-handling/index.html">Error Handling</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../stream.html">Stream</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../vec-and-swizzled-vec.html">Vec and Swizzled Vec</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../built-in-types-&amp;amp-functions.html">Built-in Types &amp; Functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../property-interface.html">Property Interface</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../version.html">Version</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../notices-and-disclaimers.html">Notices and Disclaimers</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.html">Programming Interface</a><ul>
+  <li><a href="index.html">Runtime Classes</a><ul>
+      <li>Previous: <a href="context.html" title="previous chapter">Context</a></li>
+      <li>Next: <a href="queue.html" title="next chapter">Queue</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="device">
+<span id="id1"></span><h1>Device<a class="headerlink" href="#device" title="Permalink to this headline">¶</a></h1>
+<p>The <code class="docutils literal notranslate"><span class="pre">device</span></code> class represents the capabilities of the accelerators in
+a system, as detailed in <a class="reference internal" href="../../programming-model/execution-model.html#execution-model"><span class="std std-ref">Execution Model</span></a>. The
+class contains member functions for constructing devices and obtaining
+information about the device. One form of constructor requires zero
+arguments. The constructor can also take a device selector argument that
+chooses which type of accelerator to employ, such as CPU, GPU, or FPGA.
+Lastly, construction can be via OpenCL software technology by code using
+<code class="docutils literal notranslate"><span class="pre">cl_device_id</span></code> for interoperability.</p>
+<p>The device class contains member functions for querying information
+about the device, which is useful for DPC++ programs where multiple
+devices are created. Some calls return basic information, such as
+<code class="docutils literal notranslate"><span class="pre">is_host()</span></code>, <code class="docutils literal notranslate"><span class="pre">is_cpu()</span></code>, <code class="docutils literal notranslate"><span class="pre">is_gpu()</span></code>. For more detailed
+information, the function <code class="docutils literal notranslate"><span class="pre">get_info</span></code> sets a series of attributes with
+pertinent information about the device including:</p>
+<ul class="simple">
+<li><p>The local and global work item IDs</p></li>
+<li><p>The preferred width for built in types, native ISA types, and clock
+frequency</p></li>
+<li><p>Cache width and sizes</p></li>
+<li><p>Device support attributes, such as unified memory support,
+endianness, and (if the device is online) compiler capable</p></li>
+<li><p>Name, vendor, and version of the device</p></li>
+</ul>
+<dl class="cpp class">
+<dt id="_CPPv46device">
+<span id="_CPPv36device"></span><span id="_CPPv26device"></span><em class="property">class </em><code class="sig-name descname">device</code><a class="headerlink" href="#_CPPv46device" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p class="rubric">Constructors</p>
+<dl class="cpp function">
+<dt id="_CPPv4N6device6deviceEv">
+<span id="_CPPv3N6device6deviceEv"></span><span id="_CPPv2N6device6deviceEv"></span><span id="device::device"></span><code class="sig-name descname">device</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6device6deviceEv" title="Permalink to this definition">¶</a><br /></dt>
+<dt id="_CPPv4N6device6deviceE12cl_device_id">
+<span id="_CPPv3N6device6deviceE12cl_device_id"></span><span id="_CPPv2N6device6deviceE12cl_device_id"></span><span id="device::device__cl_device_id"></span><em class="property">explicit</em> <code class="sig-name descname">device</code><span class="sig-paren">(</span>cl_device_id <em>deviceId</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6device6deviceE12cl_device_id" title="Permalink to this definition">¶</a><br /></dt>
+<dt id="_CPPv4N6device6deviceERK15device_selector">
+<span id="_CPPv3N6device6deviceERK15device_selector"></span><span id="_CPPv2N6device6deviceERK15device_selector"></span><span id="device::device__device_selectorCR"></span><em class="property">explicit</em> <code class="sig-name descname">device</code><span class="sig-paren">(</span><em class="property">const</em> device_selector &amp;<em>deviceSelector</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6device6deviceERK15device_selector" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt id="_CPPv4NK6device3getEv">
+<span id="_CPPv3NK6device3getEv"></span><span id="_CPPv2NK6device3getEv"></span><span id="device::getC"></span>cl_device_id <code class="sig-name descname">get</code><span class="sig-paren">(</span><span class="sig-paren">)</span> <em class="property">const</em><a class="headerlink" href="#_CPPv4NK6device3getEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt id="_CPPv4NK6device7is_hostEv">
+<span id="_CPPv3NK6device7is_hostEv"></span><span id="_CPPv2NK6device7is_hostEv"></span><span id="device::is_hostC"></span>bool <code class="sig-name descname">is_host</code><span class="sig-paren">(</span><span class="sig-paren">)</span> <em class="property">const</em><a class="headerlink" href="#_CPPv4NK6device7is_hostEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt id="_CPPv4NK6device6is_cpuEv">
+<span id="_CPPv3NK6device6is_cpuEv"></span><span id="_CPPv2NK6device6is_cpuEv"></span><span id="device::is_cpuC"></span>bool <code class="sig-name descname">is_cpu</code><span class="sig-paren">(</span><span class="sig-paren">)</span> <em class="property">const</em><a class="headerlink" href="#_CPPv4NK6device6is_cpuEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt id="_CPPv4NK6device6is_gpuEv">
+<span id="_CPPv3NK6device6is_gpuEv"></span><span id="_CPPv2NK6device6is_gpuEv"></span><span id="device::is_gpuC"></span>bool <code class="sig-name descname">is_gpu</code><span class="sig-paren">(</span><span class="sig-paren">)</span> <em class="property">const</em><a class="headerlink" href="#_CPPv4NK6device6is_gpuEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt id="_CPPv4NK6device14is_acceleratorEv">
+<span id="_CPPv3NK6device14is_acceleratorEv"></span><span id="_CPPv2NK6device14is_acceleratorEv"></span><span id="device::is_acceleratorC"></span>bool <code class="sig-name descname">is_accelerator</code><span class="sig-paren">(</span><span class="sig-paren">)</span> <em class="property">const</em><a class="headerlink" href="#_CPPv4NK6device14is_acceleratorEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt id="_CPPv4NK6device12get_platformEv">
+<span id="_CPPv3NK6device12get_platformEv"></span><span id="_CPPv2NK6device12get_platformEv"></span><span id="device::get_platformC"></span><a class="reference internal" href="platform.html#_CPPv48platform" title="platform">platform</a> <code class="sig-name descname">get_platform</code><span class="sig-paren">(</span><span class="sig-paren">)</span> <em class="property">const</em><a class="headerlink" href="#_CPPv4NK6device12get_platformEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt id="_CPPv4I_N4info6deviceEENK6device8get_infoEN4info12param_traitsIN4info6deviceE5paramE11return_typeEv">
+<span id="_CPPv3I_N4info6deviceEENK6device8get_infoEv"></span><span id="_CPPv2I_N4info6deviceEENK6device8get_infoEv"></span>template&lt;info::<a class="reference internal" href="#_CPPv4N4info6deviceE" title="info::device">device</a> <code class="sig-name descname">param</code>&gt;<br /><em class="property">typename</em> info::param_traits&lt;info::<a class="reference internal" href="#_CPPv4N4info6deviceE" title="info::device">device</a>, <a class="reference internal" href="#_CPPv4I_N4info6deviceEENK6device8get_infoEN4info12param_traitsIN4info6deviceE5paramE11return_typeEv" title="device::get_info::param">param</a>&gt;::return_type <code class="sig-name descname">get_info</code><span class="sig-paren">(</span><span class="sig-paren">)</span> <em class="property">const</em><a class="headerlink" href="#_CPPv4I_N4info6deviceEENK6device8get_infoEN4info12param_traitsIN4info6deviceE5paramE11return_typeEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt id="_CPPv4NK6device13has_extensionERK12string_class">
+<span id="_CPPv3NK6device13has_extensionERK12string_class"></span><span id="_CPPv2NK6device13has_extensionERK12string_class"></span><span id="device::has_extension__string_classCRC"></span>bool <code class="sig-name descname">has_extension</code><span class="sig-paren">(</span><em class="property">const</em> <a class="reference internal" href="../../language/index.html#_CPPv412string_class" title="string_class">string_class</a> &amp;<em>extension</em><span class="sig-paren">)</span> <em class="property">const</em><a class="headerlink" href="#_CPPv4NK6device13has_extensionERK12string_class" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt id="_CPPv4I_N4info18partition_propertyEENK6device18create_sub_devicesE12vector_classI6deviceE6size_t">
+<span id="_CPPv3I_N4info18partition_propertyEENK6device18create_sub_devicesE6size_t"></span><span id="_CPPv2I_N4info18partition_propertyEENK6device18create_sub_devicesE6size_t"></span>template&lt;info::<a class="reference internal" href="#_CPPv4N4info18partition_propertyE" title="info::partition_property">partition_property</a> <code class="sig-name descname">prop</code>&gt;<br /><a class="reference internal" href="../../language/index.html#_CPPv4I00E12vector_class" title="vector_class">vector_class</a>&lt;<a class="reference internal" href="#_CPPv46device" title="device">device</a>&gt; <code class="sig-name descname">create_sub_devices</code><span class="sig-paren">(</span>size_t <em>nbSubDev</em><span class="sig-paren">)</span> <em class="property">const</em><a class="headerlink" href="#_CPPv4I_N4info18partition_propertyEENK6device18create_sub_devicesE12vector_classI6deviceE6size_t" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Available only when <code class="xref cpp cpp-expr docutils literal notranslate"><a class="reference internal" href="#_CPPv4I_N4info18partition_propertyEENK6device18create_sub_devicesE12vector_classI6deviceE6size_t" title="device::create_sub_devices::prop"><span class="pre">prop</span></a> <span class="pre">==</span> <span class="pre">info</span><span class="pre">::</span><a class="reference internal" href="#_CPPv4N4info18partition_propertyE" title="info::partition_property"><span class="pre">partition_property</span></a><span class="pre">::</span><a class="reference internal" href="#_CPPv4N4info18partition_property17partition_equallyE" title="info::partition_property::partition_equally"><span class="pre">partition_equally</span></a></code></p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt id="_CPPv4I_N4info18partition_propertyEENK6device18create_sub_devicesE12vector_classI6deviceERK12vector_classI6size_tE">
+<span id="_CPPv3I_N4info18partition_propertyEENK6device18create_sub_devicesERK12vector_classI6size_tE"></span><span id="_CPPv2I_N4info18partition_propertyEENK6device18create_sub_devicesERK12vector_classI6size_tE"></span>template&lt;info::<a class="reference internal" href="#_CPPv4N4info18partition_propertyE" title="info::partition_property">partition_property</a> <code class="sig-name descname">prop</code>&gt;<br /><a class="reference internal" href="../../language/index.html#_CPPv4I00E12vector_class" title="vector_class">vector_class</a>&lt;<a class="reference internal" href="#_CPPv46device" title="device">device</a>&gt; <code class="sig-name descname">create_sub_devices</code><span class="sig-paren">(</span><em class="property">const</em> <a class="reference internal" href="../../language/index.html#_CPPv4I00E12vector_class" title="vector_class">vector_class</a>&lt;size_t&gt; &amp;<em>counts</em><span class="sig-paren">)</span> <em class="property">const</em><a class="headerlink" href="#_CPPv4I_N4info18partition_propertyEENK6device18create_sub_devicesE12vector_classI6deviceERK12vector_classI6size_tE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Available only when <code class="xref cpp cpp-expr docutils literal notranslate"><a class="reference internal" href="#_CPPv4I_N4info18partition_propertyEENK6device18create_sub_devicesE12vector_classI6deviceERK12vector_classI6size_tE" title="device::create_sub_devices::prop"><span class="pre">prop</span></a> <span class="pre">==</span> <span class="pre">info</span><span class="pre">::</span><a class="reference internal" href="#_CPPv4N4info18partition_propertyE" title="info::partition_property"><span class="pre">partition_property</span></a><span class="pre">::</span><a class="reference internal" href="#_CPPv4N4info18partition_property19partition_by_countsE" title="info::partition_property::partition_by_counts"><span class="pre">partition_by_counts</span></a></code></p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt id="_CPPv4I_N4info18partition_propertyEENK6device18create_sub_devicesE12vector_classI6deviceEN4info15affinity_domainE">
+<span id="_CPPv3I_N4info18partition_propertyEENK6device18create_sub_devicesEN4info15affinity_domainE"></span><span id="_CPPv2I_N4info18partition_propertyEENK6device18create_sub_devicesEN4info15affinity_domainE"></span>template&lt;info::<a class="reference internal" href="#_CPPv4N4info18partition_propertyE" title="info::partition_property">partition_property</a> <code class="sig-name descname">prop</code>&gt;<br /><a class="reference internal" href="../../language/index.html#_CPPv4I00E12vector_class" title="vector_class">vector_class</a>&lt;<a class="reference internal" href="#_CPPv46device" title="device">device</a>&gt; <code class="sig-name descname">create_sub_devices</code><span class="sig-paren">(</span>info::affinity_domain <em>affinityDomain</em><span class="sig-paren">)</span> <em class="property">const</em><a class="headerlink" href="#_CPPv4I_N4info18partition_propertyEENK6device18create_sub_devicesE12vector_classI6deviceEN4info15affinity_domainE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Available only when <code class="xref cpp cpp-expr docutils literal notranslate"><a class="reference internal" href="#_CPPv4I_N4info18partition_propertyEENK6device18create_sub_devicesE12vector_classI6deviceEN4info15affinity_domainE" title="device::create_sub_devices::prop"><span class="pre">prop</span></a> <span class="pre">==</span> <span class="pre">info</span><span class="pre">::</span><a class="reference internal" href="#_CPPv4N4info18partition_propertyE" title="info::partition_property"><span class="pre">partition_property</span></a><span class="pre">::</span><a class="reference internal" href="#_CPPv4N4info18partition_property28partition_by_affinity_domainE" title="info::partition_property::partition_by_affinity_domain"><span class="pre">partition_by_affinity_domain</span></a></code></p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt id="_CPPv4N6device11get_devicesEN4info11device_typeE">
+<span id="_CPPv3N6device11get_devicesEN4info11device_typeE"></span><span id="_CPPv2N6device11get_devicesEN4info11device_typeE"></span><span id="device::get_devices__info::device_type"></span><em class="property">static</em> <a class="reference internal" href="../../language/index.html#_CPPv4I00E12vector_class" title="vector_class">vector_class</a>&lt;<a class="reference internal" href="#_CPPv46device" title="device">device</a>&gt; <code class="sig-name descname">get_devices</code><span class="sig-paren">(</span>info::<a class="reference internal" href="#_CPPv4N4info11device_typeE" title="info::device_type">device_type</a> <em>deviceType</em> = info::<a class="reference internal" href="#_CPPv4N4info11device_typeE" title="info::device_type">device_type</a>::<a class="reference internal" href="#_CPPv4N4info11device_type3allE" title="info::device_type::all">all</a><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N6device11get_devicesEN4info11device_typeE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="cpp enum-class">
+<dt id="_CPPv4N4info6deviceE">
+<span id="_CPPv3N4info6deviceE"></span><span id="_CPPv2N4info6deviceE"></span><em class="property">enum class </em><code class="sig-name descname">device</code><a class="headerlink" href="#_CPPv4N4info6deviceE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>See <a class="reference external" href="https://www.khronos.org/sycl/">SYCL specification</a></p>
+<dl class="cpp enumerator">
+<dt id="_CPPv4N4info6device11device_typeE">
+<span id="_CPPv3N4info6device11device_typeE"></span><span id="_CPPv2N4info6device11device_typeE"></span><em class="property">enumerator </em><code class="sig-name descname">device_type</code><a class="headerlink" href="#_CPPv4N4info6device11device_typeE" title="Permalink to this definition">¶</a><br /></dt>
+<dt id="_CPPv4N4info6device9vendor_idE">
+<span id="_CPPv3N4info6device9vendor_idE"></span><span id="_CPPv2N4info6device9vendor_idE"></span><em class="property">enumerator </em><code class="sig-name descname">vendor_id</code><a class="headerlink" href="#_CPPv4N4info6device9vendor_idE" title="Permalink to this definition">¶</a><br /></dt>
+<dt id="_CPPv4N4info6device17max_compute_unitsE">
+<span id="_CPPv3N4info6device17max_compute_unitsE"></span><span id="_CPPv2N4info6device17max_compute_unitsE"></span><em class="property">enumerator </em><code class="sig-name descname">max_compute_units</code><a class="headerlink" href="#_CPPv4N4info6device17max_compute_unitsE" title="Permalink to this definition">¶</a><br /></dt>
+<dt id="_CPPv4N4info6device24max_work_item_dimensionsE">
+<span id="_CPPv3N4info6device24max_work_item_dimensionsE"></span><span id="_CPPv2N4info6device24max_work_item_dimensionsE"></span><em class="property">enumerator </em><code class="sig-name descname">max_work_item_dimensions</code><a class="headerlink" href="#_CPPv4N4info6device24max_work_item_dimensionsE" title="Permalink to this definition">¶</a><br /></dt>
+<dt id="_CPPv4N4info6device19max_work_item_sizesE">
+<span id="_CPPv3N4info6device19max_work_item_sizesE"></span><span id="_CPPv2N4info6device19max_work_item_sizesE"></span><em class="property">enumerator </em><code class="sig-name descname">max_work_item_sizes</code><a class="headerlink" href="#_CPPv4N4info6device19max_work_item_sizesE" title="Permalink to this definition">¶</a><br /></dt>
+<dt id="_CPPv4N4info6device19max_work_group_sizeE">
+<span id="_CPPv3N4info6device19max_work_group_sizeE"></span><span id="_CPPv2N4info6device19max_work_group_sizeE"></span><em class="property">enumerator </em><code class="sig-name descname">max_work_group_size</code><a class="headerlink" href="#_CPPv4N4info6device19max_work_group_sizeE" title="Permalink to this definition">¶</a><br /></dt>
+<dt id="_CPPv4N4info6device27preferred_vector_width_charE">
+<span id="_CPPv3N4info6device27preferred_vector_width_charE"></span><span id="_CPPv2N4info6device27preferred_vector_width_charE"></span><em class="property">enumerator </em><code class="sig-name descname">preferred_vector_width_char</code><a class="headerlink" href="#_CPPv4N4info6device27preferred_vector_width_charE" title="Permalink to this definition">¶</a><br /></dt>
+<dt id="_CPPv4N4info6device28preferred_vector_width_shortE">
+<span id="_CPPv3N4info6device28preferred_vector_width_shortE"></span><span id="_CPPv2N4info6device28preferred_vector_width_shortE"></span><em class="property">enumerator </em><code class="sig-name descname">preferred_vector_width_short</code><a class="headerlink" href="#_CPPv4N4info6device28preferred_vector_width_shortE" title="Permalink to this definition">¶</a><br /></dt>
+<dt id="_CPPv4N4info6device26preferred_vector_width_intE">
+<span id="_CPPv3N4info6device26preferred_vector_width_intE"></span><span id="_CPPv2N4info6device26preferred_vector_width_intE"></span><em class="property">enumerator </em><code class="sig-name descname">preferred_vector_width_int</code><a class="headerlink" href="#_CPPv4N4info6device26preferred_vector_width_intE" title="Permalink to this definition">¶</a><br /></dt>
+<dt id="_CPPv4N4info6device27preferred_vector_width_longE">
+<span id="_CPPv3N4info6device27preferred_vector_width_longE"></span><span id="_CPPv2N4info6device27preferred_vector_width_longE"></span><em class="property">enumerator </em><code class="sig-name descname">preferred_vector_width_long</code><a class="headerlink" href="#_CPPv4N4info6device27preferred_vector_width_longE" title="Permalink to this definition">¶</a><br /></dt>
+<dt id="_CPPv4N4info6device28preferred_vector_width_floatE">
+<span id="_CPPv3N4info6device28preferred_vector_width_floatE"></span><span id="_CPPv2N4info6device28preferred_vector_width_floatE"></span><em class="property">enumerator </em><code class="sig-name descname">preferred_vector_width_float</code><a class="headerlink" href="#_CPPv4N4info6device28preferred_vector_width_floatE" title="Permalink to this definition">¶</a><br /></dt>
+<dt id="_CPPv4N4info6device29preferred_vector_width_doubleE">
+<span id="_CPPv3N4info6device29preferred_vector_width_doubleE"></span><span id="_CPPv2N4info6device29preferred_vector_width_doubleE"></span><em class="property">enumerator </em><code class="sig-name descname">preferred_vector_width_double</code><a class="headerlink" href="#_CPPv4N4info6device29preferred_vector_width_doubleE" title="Permalink to this definition">¶</a><br /></dt>
+<dt id="_CPPv4N4info6device27preferred_vector_width_halfE">
+<span id="_CPPv3N4info6device27preferred_vector_width_halfE"></span><span id="_CPPv2N4info6device27preferred_vector_width_halfE"></span><em class="property">enumerator </em><code class="sig-name descname">preferred_vector_width_half</code><a class="headerlink" href="#_CPPv4N4info6device27preferred_vector_width_halfE" title="Permalink to this definition">¶</a><br /></dt>
+<dt id="_CPPv4N4info6device24native_vector_width_charE">
+<span id="_CPPv3N4info6device24native_vector_width_charE"></span><span id="_CPPv2N4info6device24native_vector_width_charE"></span><em class="property">enumerator </em><code class="sig-name descname">native_vector_width_char</code><a class="headerlink" href="#_CPPv4N4info6device24native_vector_width_charE" title="Permalink to this definition">¶</a><br /></dt>
+<dt id="_CPPv4N4info6device25native_vector_width_shortE">
+<span id="_CPPv3N4info6device25native_vector_width_shortE"></span><span id="_CPPv2N4info6device25native_vector_width_shortE"></span><em class="property">enumerator </em><code class="sig-name descname">native_vector_width_short</code><a class="headerlink" href="#_CPPv4N4info6device25native_vector_width_shortE" title="Permalink to this definition">¶</a><br /></dt>
+<dt id="_CPPv4N4info6device23native_vector_width_intE">
+<span id="_CPPv3N4info6device23native_vector_width_intE"></span><span id="_CPPv2N4info6device23native_vector_width_intE"></span><em class="property">enumerator </em><code class="sig-name descname">native_vector_width_int</code><a class="headerlink" href="#_CPPv4N4info6device23native_vector_width_intE" title="Permalink to this definition">¶</a><br /></dt>
+<dt id="_CPPv4N4info6device24native_vector_width_longE">
+<span id="_CPPv3N4info6device24native_vector_width_longE"></span><span id="_CPPv2N4info6device24native_vector_width_longE"></span><em class="property">enumerator </em><code class="sig-name descname">native_vector_width_long</code><a class="headerlink" href="#_CPPv4N4info6device24native_vector_width_longE" title="Permalink to this definition">¶</a><br /></dt>
+<dt id="_CPPv4N4info6device25native_vector_width_floatE">
+<span id="_CPPv3N4info6device25native_vector_width_floatE"></span><span id="_CPPv2N4info6device25native_vector_width_floatE"></span><em class="property">enumerator </em><code class="sig-name descname">native_vector_width_float</code><a class="headerlink" href="#_CPPv4N4info6device25native_vector_width_floatE" title="Permalink to this definition">¶</a><br /></dt>
+<dt id="_CPPv4N4info6device26native_vector_width_doubleE">
+<span id="_CPPv3N4info6device26native_vector_width_doubleE"></span><span id="_CPPv2N4info6device26native_vector_width_doubleE"></span><em class="property">enumerator </em><code class="sig-name descname">native_vector_width_double</code><a class="headerlink" href="#_CPPv4N4info6device26native_vector_width_doubleE" title="Permalink to this definition">¶</a><br /></dt>
+<dt id="_CPPv4N4info6device24native_vector_width_halfE">
+<span id="_CPPv3N4info6device24native_vector_width_halfE"></span><span id="_CPPv2N4info6device24native_vector_width_halfE"></span><em class="property">enumerator </em><code class="sig-name descname">native_vector_width_half</code><a class="headerlink" href="#_CPPv4N4info6device24native_vector_width_halfE" title="Permalink to this definition">¶</a><br /></dt>
+<dt id="_CPPv4N4info6device19max_clock_frequencyE">
+<span id="_CPPv3N4info6device19max_clock_frequencyE"></span><span id="_CPPv2N4info6device19max_clock_frequencyE"></span><em class="property">enumerator </em><code class="sig-name descname">max_clock_frequency</code><a class="headerlink" href="#_CPPv4N4info6device19max_clock_frequencyE" title="Permalink to this definition">¶</a><br /></dt>
+<dt id="_CPPv4N4info6device12address_bitsE">
+<span id="_CPPv3N4info6device12address_bitsE"></span><span id="_CPPv2N4info6device12address_bitsE"></span><em class="property">enumerator </em><code class="sig-name descname">address_bits</code><a class="headerlink" href="#_CPPv4N4info6device12address_bitsE" title="Permalink to this definition">¶</a><br /></dt>
+<dt id="_CPPv4N4info6device18max_mem_alloc_sizeE">
+<span id="_CPPv3N4info6device18max_mem_alloc_sizeE"></span><span id="_CPPv2N4info6device18max_mem_alloc_sizeE"></span><em class="property">enumerator </em><code class="sig-name descname">max_mem_alloc_size</code><a class="headerlink" href="#_CPPv4N4info6device18max_mem_alloc_sizeE" title="Permalink to this definition">¶</a><br /></dt>
+<dt id="_CPPv4N4info6device13image_supportE">
+<span id="_CPPv3N4info6device13image_supportE"></span><span id="_CPPv2N4info6device13image_supportE"></span><em class="property">enumerator </em><code class="sig-name descname">image_support</code><a class="headerlink" href="#_CPPv4N4info6device13image_supportE" title="Permalink to this definition">¶</a><br /></dt>
+<dt id="_CPPv4N4info6device19max_read_image_argsE">
+<span id="_CPPv3N4info6device19max_read_image_argsE"></span><span id="_CPPv2N4info6device19max_read_image_argsE"></span><em class="property">enumerator </em><code class="sig-name descname">max_read_image_args</code><a class="headerlink" href="#_CPPv4N4info6device19max_read_image_argsE" title="Permalink to this definition">¶</a><br /></dt>
+<dt id="_CPPv4N4info6device20max_write_image_argsE">
+<span id="_CPPv3N4info6device20max_write_image_argsE"></span><span id="_CPPv2N4info6device20max_write_image_argsE"></span><em class="property">enumerator </em><code class="sig-name descname">max_write_image_args</code><a class="headerlink" href="#_CPPv4N4info6device20max_write_image_argsE" title="Permalink to this definition">¶</a><br /></dt>
+<dt id="_CPPv4N4info6device18image2d_max_heightE">
+<span id="_CPPv3N4info6device18image2d_max_heightE"></span><span id="_CPPv2N4info6device18image2d_max_heightE"></span><em class="property">enumerator </em><code class="sig-name descname">image2d_max_height</code><a class="headerlink" href="#_CPPv4N4info6device18image2d_max_heightE" title="Permalink to this definition">¶</a><br /></dt>
+<dt id="_CPPv4N4info6device17image2d_max_widthE">
+<span id="_CPPv3N4info6device17image2d_max_widthE"></span><span id="_CPPv2N4info6device17image2d_max_widthE"></span><em class="property">enumerator </em><code class="sig-name descname">image2d_max_width</code><a class="headerlink" href="#_CPPv4N4info6device17image2d_max_widthE" title="Permalink to this definition">¶</a><br /></dt>
+<dt id="_CPPv4N4info6device18image3d_max_heightE">
+<span id="_CPPv3N4info6device18image3d_max_heightE"></span><span id="_CPPv2N4info6device18image3d_max_heightE"></span><em class="property">enumerator </em><code class="sig-name descname">image3d_max_height</code><a class="headerlink" href="#_CPPv4N4info6device18image3d_max_heightE" title="Permalink to this definition">¶</a><br /></dt>
+<dt id="_CPPv4N4info6device17image3d_max_widthE">
+<span id="_CPPv3N4info6device17image3d_max_widthE"></span><span id="_CPPv2N4info6device17image3d_max_widthE"></span><em class="property">enumerator </em><code class="sig-name descname">image3d_max_width</code><a class="headerlink" href="#_CPPv4N4info6device17image3d_max_widthE" title="Permalink to this definition">¶</a><br /></dt>
+<dt id="_CPPv4N4info6device17image3d_max_depthE">
+<span id="_CPPv3N4info6device17image3d_max_depthE"></span><span id="_CPPv2N4info6device17image3d_max_depthE"></span><em class="property">enumerator </em><code class="sig-name descname">image3d_max_depth</code><a class="headerlink" href="#_CPPv4N4info6device17image3d_max_depthE" title="Permalink to this definition">¶</a><br /></dt>
+<dt id="_CPPv4N4info6device21image_max_buffer_sizeE">
+<span id="_CPPv3N4info6device21image_max_buffer_sizeE"></span><span id="_CPPv2N4info6device21image_max_buffer_sizeE"></span><em class="property">enumerator </em><code class="sig-name descname">image_max_buffer_size</code><a class="headerlink" href="#_CPPv4N4info6device21image_max_buffer_sizeE" title="Permalink to this definition">¶</a><br /></dt>
+<dt id="_CPPv4N4info6device20image_max_array_sizeE">
+<span id="_CPPv3N4info6device20image_max_array_sizeE"></span><span id="_CPPv2N4info6device20image_max_array_sizeE"></span><em class="property">enumerator </em><code class="sig-name descname">image_max_array_size</code><a class="headerlink" href="#_CPPv4N4info6device20image_max_array_sizeE" title="Permalink to this definition">¶</a><br /></dt>
+<dt id="_CPPv4N4info6device12max_samplersE">
+<span id="_CPPv3N4info6device12max_samplersE"></span><span id="_CPPv2N4info6device12max_samplersE"></span><em class="property">enumerator </em><code class="sig-name descname">max_samplers</code><a class="headerlink" href="#_CPPv4N4info6device12max_samplersE" title="Permalink to this definition">¶</a><br /></dt>
+<dt id="_CPPv4N4info6device18max_parameter_sizeE">
+<span id="_CPPv3N4info6device18max_parameter_sizeE"></span><span id="_CPPv2N4info6device18max_parameter_sizeE"></span><em class="property">enumerator </em><code class="sig-name descname">max_parameter_size</code><a class="headerlink" href="#_CPPv4N4info6device18max_parameter_sizeE" title="Permalink to this definition">¶</a><br /></dt>
+<dt id="_CPPv4N4info6device19mem_base_addr_alignE">
+<span id="_CPPv3N4info6device19mem_base_addr_alignE"></span><span id="_CPPv2N4info6device19mem_base_addr_alignE"></span><em class="property">enumerator </em><code class="sig-name descname">mem_base_addr_align</code><a class="headerlink" href="#_CPPv4N4info6device19mem_base_addr_alignE" title="Permalink to this definition">¶</a><br /></dt>
+<dt id="_CPPv4N4info6device14half_fp_configE">
+<span id="_CPPv3N4info6device14half_fp_configE"></span><span id="_CPPv2N4info6device14half_fp_configE"></span><em class="property">enumerator </em><code class="sig-name descname">half_fp_config</code><a class="headerlink" href="#_CPPv4N4info6device14half_fp_configE" title="Permalink to this definition">¶</a><br /></dt>
+<dt id="_CPPv4N4info6device16single_fp_configE">
+<span id="_CPPv3N4info6device16single_fp_configE"></span><span id="_CPPv2N4info6device16single_fp_configE"></span><em class="property">enumerator </em><code class="sig-name descname">single_fp_config</code><a class="headerlink" href="#_CPPv4N4info6device16single_fp_configE" title="Permalink to this definition">¶</a><br /></dt>
+<dt id="_CPPv4N4info6device16double_fp_configE">
+<span id="_CPPv3N4info6device16double_fp_configE"></span><span id="_CPPv2N4info6device16double_fp_configE"></span><em class="property">enumerator </em><code class="sig-name descname">double_fp_config</code><a class="headerlink" href="#_CPPv4N4info6device16double_fp_configE" title="Permalink to this definition">¶</a><br /></dt>
+<dt id="_CPPv4N4info6device21global_mem_cache_typeE">
+<span id="_CPPv3N4info6device21global_mem_cache_typeE"></span><span id="_CPPv2N4info6device21global_mem_cache_typeE"></span><em class="property">enumerator </em><code class="sig-name descname">global_mem_cache_type</code><a class="headerlink" href="#_CPPv4N4info6device21global_mem_cache_typeE" title="Permalink to this definition">¶</a><br /></dt>
+<dt id="_CPPv4N4info6device26global_mem_cache_line_sizeE">
+<span id="_CPPv3N4info6device26global_mem_cache_line_sizeE"></span><span id="_CPPv2N4info6device26global_mem_cache_line_sizeE"></span><em class="property">enumerator </em><code class="sig-name descname">global_mem_cache_line_size</code><a class="headerlink" href="#_CPPv4N4info6device26global_mem_cache_line_sizeE" title="Permalink to this definition">¶</a><br /></dt>
+<dt id="_CPPv4N4info6device21global_mem_cache_sizeE">
+<span id="_CPPv3N4info6device21global_mem_cache_sizeE"></span><span id="_CPPv2N4info6device21global_mem_cache_sizeE"></span><em class="property">enumerator </em><code class="sig-name descname">global_mem_cache_size</code><a class="headerlink" href="#_CPPv4N4info6device21global_mem_cache_sizeE" title="Permalink to this definition">¶</a><br /></dt>
+<dt id="_CPPv4N4info6device15global_mem_sizeE">
+<span id="_CPPv3N4info6device15global_mem_sizeE"></span><span id="_CPPv2N4info6device15global_mem_sizeE"></span><em class="property">enumerator </em><code class="sig-name descname">global_mem_size</code><a class="headerlink" href="#_CPPv4N4info6device15global_mem_sizeE" title="Permalink to this definition">¶</a><br /></dt>
+<dt id="_CPPv4N4info6device24max_constant_buffer_sizeE">
+<span id="_CPPv3N4info6device24max_constant_buffer_sizeE"></span><span id="_CPPv2N4info6device24max_constant_buffer_sizeE"></span><em class="property">enumerator </em><code class="sig-name descname">max_constant_buffer_size</code><a class="headerlink" href="#_CPPv4N4info6device24max_constant_buffer_sizeE" title="Permalink to this definition">¶</a><br /></dt>
+<dt id="_CPPv4N4info6device17max_constant_argsE">
+<span id="_CPPv3N4info6device17max_constant_argsE"></span><span id="_CPPv2N4info6device17max_constant_argsE"></span><em class="property">enumerator </em><code class="sig-name descname">max_constant_args</code><a class="headerlink" href="#_CPPv4N4info6device17max_constant_argsE" title="Permalink to this definition">¶</a><br /></dt>
+<dt id="_CPPv4N4info6device14local_mem_typeE">
+<span id="_CPPv3N4info6device14local_mem_typeE"></span><span id="_CPPv2N4info6device14local_mem_typeE"></span><em class="property">enumerator </em><code class="sig-name descname">local_mem_type</code><a class="headerlink" href="#_CPPv4N4info6device14local_mem_typeE" title="Permalink to this definition">¶</a><br /></dt>
+<dt id="_CPPv4N4info6device14local_mem_sizeE">
+<span id="_CPPv3N4info6device14local_mem_sizeE"></span><span id="_CPPv2N4info6device14local_mem_sizeE"></span><em class="property">enumerator </em><code class="sig-name descname">local_mem_size</code><a class="headerlink" href="#_CPPv4N4info6device14local_mem_sizeE" title="Permalink to this definition">¶</a><br /></dt>
+<dt id="_CPPv4N4info6device24error_correction_supportE">
+<span id="_CPPv3N4info6device24error_correction_supportE"></span><span id="_CPPv2N4info6device24error_correction_supportE"></span><em class="property">enumerator </em><code class="sig-name descname">error_correction_support</code><a class="headerlink" href="#_CPPv4N4info6device24error_correction_supportE" title="Permalink to this definition">¶</a><br /></dt>
+<dt id="_CPPv4N4info6device19host_unified_memoryE">
+<span id="_CPPv3N4info6device19host_unified_memoryE"></span><span id="_CPPv2N4info6device19host_unified_memoryE"></span><em class="property">enumerator </em><code class="sig-name descname">host_unified_memory</code><a class="headerlink" href="#_CPPv4N4info6device19host_unified_memoryE" title="Permalink to this definition">¶</a><br /></dt>
+<dt id="_CPPv4N4info6device26profiling_timer_resolutionE">
+<span id="_CPPv3N4info6device26profiling_timer_resolutionE"></span><span id="_CPPv2N4info6device26profiling_timer_resolutionE"></span><em class="property">enumerator </em><code class="sig-name descname">profiling_timer_resolution</code><a class="headerlink" href="#_CPPv4N4info6device26profiling_timer_resolutionE" title="Permalink to this definition">¶</a><br /></dt>
+<dt id="_CPPv4N4info6device16is_endian_littleE">
+<span id="_CPPv3N4info6device16is_endian_littleE"></span><span id="_CPPv2N4info6device16is_endian_littleE"></span><em class="property">enumerator </em><code class="sig-name descname">is_endian_little</code><a class="headerlink" href="#_CPPv4N4info6device16is_endian_littleE" title="Permalink to this definition">¶</a><br /></dt>
+<dt id="_CPPv4N4info6device12is_availableE">
+<span id="_CPPv3N4info6device12is_availableE"></span><span id="_CPPv2N4info6device12is_availableE"></span><em class="property">enumerator </em><code class="sig-name descname">is_available</code><a class="headerlink" href="#_CPPv4N4info6device12is_availableE" title="Permalink to this definition">¶</a><br /></dt>
+<dt id="_CPPv4N4info6device21is_compiler_availableE">
+<span id="_CPPv3N4info6device21is_compiler_availableE"></span><span id="_CPPv2N4info6device21is_compiler_availableE"></span><em class="property">enumerator </em><code class="sig-name descname">is_compiler_available</code><a class="headerlink" href="#_CPPv4N4info6device21is_compiler_availableE" title="Permalink to this definition">¶</a><br /></dt>
+<dt id="_CPPv4N4info6device19is_linker_availableE">
+<span id="_CPPv3N4info6device19is_linker_availableE"></span><span id="_CPPv2N4info6device19is_linker_availableE"></span><em class="property">enumerator </em><code class="sig-name descname">is_linker_available</code><a class="headerlink" href="#_CPPv4N4info6device19is_linker_availableE" title="Permalink to this definition">¶</a><br /></dt>
+<dt id="_CPPv4N4info6device22execution_capabilitiesE">
+<span id="_CPPv3N4info6device22execution_capabilitiesE"></span><span id="_CPPv2N4info6device22execution_capabilitiesE"></span><em class="property">enumerator </em><code class="sig-name descname">execution_capabilities</code><a class="headerlink" href="#_CPPv4N4info6device22execution_capabilitiesE" title="Permalink to this definition">¶</a><br /></dt>
+<dt id="_CPPv4N4info6device15queue_profilingE">
+<span id="_CPPv3N4info6device15queue_profilingE"></span><span id="_CPPv2N4info6device15queue_profilingE"></span><em class="property">enumerator </em><code class="sig-name descname">queue_profiling</code><a class="headerlink" href="#_CPPv4N4info6device15queue_profilingE" title="Permalink to this definition">¶</a><br /></dt>
+<dt id="_CPPv4N4info6device16built_in_kernelsE">
+<span id="_CPPv3N4info6device16built_in_kernelsE"></span><span id="_CPPv2N4info6device16built_in_kernelsE"></span><em class="property">enumerator </em><code class="sig-name descname">built_in_kernels</code><a class="headerlink" href="#_CPPv4N4info6device16built_in_kernelsE" title="Permalink to this definition">¶</a><br /></dt>
+<dt id="_CPPv4N4info6device8platformE">
+<span id="_CPPv3N4info6device8platformE"></span><span id="_CPPv2N4info6device8platformE"></span><em class="property">enumerator </em><code class="sig-name descname">platform</code><a class="headerlink" href="#_CPPv4N4info6device8platformE" title="Permalink to this definition">¶</a><br /></dt>
+<dt id="_CPPv4N4info6device4nameE">
+<span id="_CPPv3N4info6device4nameE"></span><span id="_CPPv2N4info6device4nameE"></span><em class="property">enumerator </em><code class="sig-name descname">name</code><a class="headerlink" href="#_CPPv4N4info6device4nameE" title="Permalink to this definition">¶</a><br /></dt>
+<dt id="_CPPv4N4info6device6vendorE">
+<span id="_CPPv3N4info6device6vendorE"></span><span id="_CPPv2N4info6device6vendorE"></span><em class="property">enumerator </em><code class="sig-name descname">vendor</code><a class="headerlink" href="#_CPPv4N4info6device6vendorE" title="Permalink to this definition">¶</a><br /></dt>
+<dt id="_CPPv4N4info6device14driver_versionE">
+<span id="_CPPv3N4info6device14driver_versionE"></span><span id="_CPPv2N4info6device14driver_versionE"></span><em class="property">enumerator </em><code class="sig-name descname">driver_version</code><a class="headerlink" href="#_CPPv4N4info6device14driver_versionE" title="Permalink to this definition">¶</a><br /></dt>
+<dt id="_CPPv4N4info6device7profileE">
+<span id="_CPPv3N4info6device7profileE"></span><span id="_CPPv2N4info6device7profileE"></span><em class="property">enumerator </em><code class="sig-name descname">profile</code><a class="headerlink" href="#_CPPv4N4info6device7profileE" title="Permalink to this definition">¶</a><br /></dt>
+<dt id="_CPPv4N4info6device7versionE">
+<span id="_CPPv3N4info6device7versionE"></span><span id="_CPPv2N4info6device7versionE"></span><em class="property">enumerator </em><code class="sig-name descname">version</code><a class="headerlink" href="#_CPPv4N4info6device7versionE" title="Permalink to this definition">¶</a><br /></dt>
+<dt id="_CPPv4N4info6device16opencl_c_versionE">
+<span id="_CPPv3N4info6device16opencl_c_versionE"></span><span id="_CPPv2N4info6device16opencl_c_versionE"></span><em class="property">enumerator </em><code class="sig-name descname">opencl_c_version</code><a class="headerlink" href="#_CPPv4N4info6device16opencl_c_versionE" title="Permalink to this definition">¶</a><br /></dt>
+<dt id="_CPPv4N4info6device10extensionsE">
+<span id="_CPPv3N4info6device10extensionsE"></span><span id="_CPPv2N4info6device10extensionsE"></span><em class="property">enumerator </em><code class="sig-name descname">extensions</code><a class="headerlink" href="#_CPPv4N4info6device10extensionsE" title="Permalink to this definition">¶</a><br /></dt>
+<dt id="_CPPv4N4info6device18printf_buffer_sizeE">
+<span id="_CPPv3N4info6device18printf_buffer_sizeE"></span><span id="_CPPv2N4info6device18printf_buffer_sizeE"></span><em class="property">enumerator </em><code class="sig-name descname">printf_buffer_size</code><a class="headerlink" href="#_CPPv4N4info6device18printf_buffer_sizeE" title="Permalink to this definition">¶</a><br /></dt>
+<dt id="_CPPv4N4info6device27preferred_interop_user_syncE">
+<span id="_CPPv3N4info6device27preferred_interop_user_syncE"></span><span id="_CPPv2N4info6device27preferred_interop_user_syncE"></span><em class="property">enumerator </em><code class="sig-name descname">preferred_interop_user_sync</code><a class="headerlink" href="#_CPPv4N4info6device27preferred_interop_user_syncE" title="Permalink to this definition">¶</a><br /></dt>
+<dt id="_CPPv4N4info6device13parent_deviceE">
+<span id="_CPPv3N4info6device13parent_deviceE"></span><span id="_CPPv2N4info6device13parent_deviceE"></span><em class="property">enumerator </em><code class="sig-name descname">parent_device</code><a class="headerlink" href="#_CPPv4N4info6device13parent_deviceE" title="Permalink to this definition">¶</a><br /></dt>
+<dt id="_CPPv4N4info6device25partition_max_sub_devicesE">
+<span id="_CPPv3N4info6device25partition_max_sub_devicesE"></span><span id="_CPPv2N4info6device25partition_max_sub_devicesE"></span><em class="property">enumerator </em><code class="sig-name descname">partition_max_sub_devices</code><a class="headerlink" href="#_CPPv4N4info6device25partition_max_sub_devicesE" title="Permalink to this definition">¶</a><br /></dt>
+<dt id="_CPPv4N4info6device20partition_propertiesE">
+<span id="_CPPv3N4info6device20partition_propertiesE"></span><span id="_CPPv2N4info6device20partition_propertiesE"></span><em class="property">enumerator </em><code class="sig-name descname">partition_properties</code><a class="headerlink" href="#_CPPv4N4info6device20partition_propertiesE" title="Permalink to this definition">¶</a><br /></dt>
+<dt id="_CPPv4N4info6device26partition_affinity_domainsE">
+<span id="_CPPv3N4info6device26partition_affinity_domainsE"></span><span id="_CPPv2N4info6device26partition_affinity_domainsE"></span><em class="property">enumerator </em><code class="sig-name descname">partition_affinity_domains</code><a class="headerlink" href="#_CPPv4N4info6device26partition_affinity_domainsE" title="Permalink to this definition">¶</a><br /></dt>
+<dt id="_CPPv4N4info6device23partition_type_propertyE">
+<span id="_CPPv3N4info6device23partition_type_propertyE"></span><span id="_CPPv2N4info6device23partition_type_propertyE"></span><em class="property">enumerator </em><code class="sig-name descname">partition_type_property</code><a class="headerlink" href="#_CPPv4N4info6device23partition_type_propertyE" title="Permalink to this definition">¶</a><br /></dt>
+<dt id="_CPPv4N4info6device30partition_type_affinity_domainE">
+<span id="_CPPv3N4info6device30partition_type_affinity_domainE"></span><span id="_CPPv2N4info6device30partition_type_affinity_domainE"></span><em class="property">enumerator </em><code class="sig-name descname">partition_type_affinity_domain</code><a class="headerlink" href="#_CPPv4N4info6device30partition_type_affinity_domainE" title="Permalink to this definition">¶</a><br /></dt>
+<dt id="_CPPv4N4info6device15reference_countE">
+<span id="_CPPv3N4info6device15reference_countE"></span><span id="_CPPv2N4info6device15reference_countE"></span><em class="property">enumerator </em><code class="sig-name descname">reference_count</code><a class="headerlink" href="#_CPPv4N4info6device15reference_countE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="cpp enum-class">
+<dt id="_CPPv4N4info11device_typeE">
+<span id="_CPPv3N4info11device_typeE"></span><span id="_CPPv2N4info11device_typeE"></span><em class="property">enum class </em><code class="sig-name descname">device_type</code><a class="headerlink" href="#_CPPv4N4info11device_typeE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><dl class="cpp enumerator">
+<dt id="_CPPv4N4info11device_type3cpuE">
+<span id="_CPPv3N4info11device_type3cpuE"></span><span id="_CPPv2N4info11device_type3cpuE"></span><em class="property">enumerator </em><code class="sig-name descname">cpu</code><a class="headerlink" href="#_CPPv4N4info11device_type3cpuE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Maps to OpenCL CL_DEVICE_TYPE_CPU</p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt id="_CPPv4N4info11device_type3gpuE">
+<span id="_CPPv3N4info11device_type3gpuE"></span><span id="_CPPv2N4info11device_type3gpuE"></span><em class="property">enumerator </em><code class="sig-name descname">gpu</code><a class="headerlink" href="#_CPPv4N4info11device_type3gpuE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Maps to OpenCL CL_DEVICE_TYPE_GPU</p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt id="_CPPv4N4info11device_type3accE">
+<span id="_CPPv3N4info11device_type3accE"></span><span id="_CPPv2N4info11device_type3accE"></span><em class="property">enumerator </em><code class="sig-name descname">acc</code><a class="headerlink" href="#_CPPv4N4info11device_type3accE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Maps to OpenCL CL_DEVICE_TYPE_ACCELERATOR</p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt id="_CPPv4N4info11device_type3cusE">
+<span id="_CPPv3N4info11device_type3cusE"></span><span id="_CPPv2N4info11device_type3cusE"></span><em class="property">enumerator </em><code class="sig-name descname">cus</code><a class="headerlink" href="#_CPPv4N4info11device_type3cusE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Maps to OpenCL CL_DEVICE_TYPE_CUSTOM</p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt id="_CPPv4N4info11device_type3autE">
+<span id="_CPPv3N4info11device_type3autE"></span><span id="_CPPv2N4info11device_type3autE"></span><em class="property">enumerator </em><code class="sig-name descname">aut</code><a class="headerlink" href="#_CPPv4N4info11device_type3autE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Maps to OpenCL CL_DEVICE_TYPE_DEFAULT</p>
+</dd></dl>
+
+<dl class="cpp enumerator">
+<dt id="_CPPv4N4info11device_type4hostE">
+<span id="_CPPv3N4info11device_type4hostE"></span><span id="_CPPv2N4info11device_type4hostE"></span><em class="property">enumerator </em><code class="sig-name descname">host</code><a class="headerlink" href="#_CPPv4N4info11device_type4hostE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp enumerator">
+<dt id="_CPPv4N4info11device_type3allE">
+<span id="_CPPv3N4info11device_type3allE"></span><span id="_CPPv2N4info11device_type3allE"></span><em class="property">enumerator </em><code class="sig-name descname">all</code><a class="headerlink" href="#_CPPv4N4info11device_type3allE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Maps to OpenCL CL_DEVICE_TYPE_ALL</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="cpp enum-class">
+<dt id="_CPPv4N4info18partition_propertyE">
+<span id="_CPPv3N4info18partition_propertyE"></span><span id="_CPPv2N4info18partition_propertyE"></span><em class="property">enum class </em><code class="sig-name descname">partition_property</code><a class="headerlink" href="#_CPPv4N4info18partition_propertyE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>See <a class="reference external" href="https://www.khronos.org/sycl/">SYCL specification</a></p>
+<dl class="cpp enumerator">
+<dt id="_CPPv4N4info18partition_property12no_partitionE">
+<span id="_CPPv3N4info18partition_property12no_partitionE"></span><span id="_CPPv2N4info18partition_property12no_partitionE"></span><em class="property">enumerator </em><code class="sig-name descname">no_partition</code><a class="headerlink" href="#_CPPv4N4info18partition_property12no_partitionE" title="Permalink to this definition">¶</a><br /></dt>
+<dt id="_CPPv4N4info18partition_property17partition_equallyE">
+<span id="_CPPv3N4info18partition_property17partition_equallyE"></span><span id="_CPPv2N4info18partition_property17partition_equallyE"></span><em class="property">enumerator </em><code class="sig-name descname">partition_equally</code><a class="headerlink" href="#_CPPv4N4info18partition_property17partition_equallyE" title="Permalink to this definition">¶</a><br /></dt>
+<dt id="_CPPv4N4info18partition_property19partition_by_countsE">
+<span id="_CPPv3N4info18partition_property19partition_by_countsE"></span><span id="_CPPv2N4info18partition_property19partition_by_countsE"></span><em class="property">enumerator </em><code class="sig-name descname">partition_by_counts</code><a class="headerlink" href="#_CPPv4N4info18partition_property19partition_by_countsE" title="Permalink to this definition">¶</a><br /></dt>
+<dt id="_CPPv4N4info18partition_property28partition_by_affinity_domainE">
+<span id="_CPPv3N4info18partition_property28partition_by_affinity_domainE"></span><span id="_CPPv2N4info18partition_property28partition_by_affinity_domainE"></span><em class="property">enumerator </em><code class="sig-name descname">partition_by_affinity_domain</code><a class="headerlink" href="#_CPPv4N4info18partition_property28partition_by_affinity_domainE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="cpp enum-class">
+<dt id="_CPPv4N4info25partition_affinity_domainE">
+<span id="_CPPv3N4info25partition_affinity_domainE"></span><span id="_CPPv2N4info25partition_affinity_domainE"></span><em class="property">enum class </em><code class="sig-name descname">partition_affinity_domain</code><a class="headerlink" href="#_CPPv4N4info25partition_affinity_domainE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>See <a class="reference external" href="https://www.khronos.org/sycl/">SYCL specification</a></p>
+<dl class="cpp enumerator">
+<dt id="_CPPv4N4info25partition_affinity_domain14not_applicableE">
+<span id="_CPPv3N4info25partition_affinity_domain14not_applicableE"></span><span id="_CPPv2N4info25partition_affinity_domain14not_applicableE"></span><em class="property">enumerator </em><code class="sig-name descname">not_applicable</code><a class="headerlink" href="#_CPPv4N4info25partition_affinity_domain14not_applicableE" title="Permalink to this definition">¶</a><br /></dt>
+<dt id="_CPPv4N4info25partition_affinity_domain4numaE">
+<span id="_CPPv3N4info25partition_affinity_domain4numaE"></span><span id="_CPPv2N4info25partition_affinity_domain4numaE"></span><em class="property">enumerator </em><code class="sig-name descname">numa</code><a class="headerlink" href="#_CPPv4N4info25partition_affinity_domain4numaE" title="Permalink to this definition">¶</a><br /></dt>
+<dt id="_CPPv4N4info25partition_affinity_domain8L4_cacheE">
+<span id="_CPPv3N4info25partition_affinity_domain8L4_cacheE"></span><span id="_CPPv2N4info25partition_affinity_domain8L4_cacheE"></span><em class="property">enumerator </em><code class="sig-name descname">L4_cache</code><a class="headerlink" href="#_CPPv4N4info25partition_affinity_domain8L4_cacheE" title="Permalink to this definition">¶</a><br /></dt>
+<dt id="_CPPv4N4info25partition_affinity_domain8L3_cacheE">
+<span id="_CPPv3N4info25partition_affinity_domain8L3_cacheE"></span><span id="_CPPv2N4info25partition_affinity_domain8L3_cacheE"></span><em class="property">enumerator </em><code class="sig-name descname">L3_cache</code><a class="headerlink" href="#_CPPv4N4info25partition_affinity_domain8L3_cacheE" title="Permalink to this definition">¶</a><br /></dt>
+<dt id="_CPPv4N4info25partition_affinity_domain8L2_cacheE">
+<span id="_CPPv3N4info25partition_affinity_domain8L2_cacheE"></span><span id="_CPPv2N4info25partition_affinity_domain8L2_cacheE"></span><em class="property">enumerator </em><code class="sig-name descname">L2_cache</code><a class="headerlink" href="#_CPPv4N4info25partition_affinity_domain8L2_cacheE" title="Permalink to this definition">¶</a><br /></dt>
+<dt id="_CPPv4N4info25partition_affinity_domain8L1_cacheE">
+<span id="_CPPv3N4info25partition_affinity_domain8L1_cacheE"></span><span id="_CPPv2N4info25partition_affinity_domain8L1_cacheE"></span><em class="property">enumerator </em><code class="sig-name descname">L1_cache</code><a class="headerlink" href="#_CPPv4N4info25partition_affinity_domain8L1_cacheE" title="Permalink to this definition">¶</a><br /></dt>
+<dt id="_CPPv4N4info25partition_affinity_domain18next_partitionableE">
+<span id="_CPPv3N4info25partition_affinity_domain18next_partitionableE"></span><span id="_CPPv2N4info25partition_affinity_domain18next_partitionableE"></span><em class="property">enumerator </em><code class="sig-name descname">next_partitionable</code><a class="headerlink" href="#_CPPv4N4info25partition_affinity_domain18next_partitionableE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="cpp enum-class">
+<dt id="_CPPv4N4info14local_mem_typeE">
+<span id="_CPPv3N4info14local_mem_typeE"></span><span id="_CPPv2N4info14local_mem_typeE"></span><em class="property">enum class </em><code class="sig-name descname">local_mem_type</code><a class="headerlink" href="#_CPPv4N4info14local_mem_typeE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>See <a class="reference external" href="https://www.khronos.org/sycl/">SYCL specification</a></p>
+<dl class="cpp enumerator">
+<dt id="_CPPv4N4info14local_mem_type4noneE">
+<span id="_CPPv3N4info14local_mem_type4noneE"></span><span id="_CPPv2N4info14local_mem_type4noneE"></span><em class="property">enumerator </em><code class="sig-name descname">none</code><a class="headerlink" href="#_CPPv4N4info14local_mem_type4noneE" title="Permalink to this definition">¶</a><br /></dt>
+<dt id="_CPPv4N4info14local_mem_type5localE">
+<span id="_CPPv3N4info14local_mem_type5localE"></span><span id="_CPPv2N4info14local_mem_type5localE"></span><em class="property">enumerator </em><code class="sig-name descname">local</code><a class="headerlink" href="#_CPPv4N4info14local_mem_type5localE" title="Permalink to this definition">¶</a><br /></dt>
+<dt id="_CPPv4N4info14local_mem_type6globalE">
+<span id="_CPPv3N4info14local_mem_type6globalE"></span><span id="_CPPv2N4info14local_mem_type6globalE"></span><em class="property">enumerator </em><code class="sig-name descname">global</code><a class="headerlink" href="#_CPPv4N4info14local_mem_type6globalE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="cpp enum-class">
+<dt id="_CPPv4N4info9fp_configE">
+<span id="_CPPv3N4info9fp_configE"></span><span id="_CPPv2N4info9fp_configE"></span><em class="property">enum class </em><code class="sig-name descname">fp_config</code><a class="headerlink" href="#_CPPv4N4info9fp_configE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>See <a class="reference external" href="https://www.khronos.org/sycl/">SYCL specification</a></p>
+<dl class="cpp enumerator">
+<dt id="_CPPv4N4info9fp_config6denormE">
+<span id="_CPPv3N4info9fp_config6denormE"></span><span id="_CPPv2N4info9fp_config6denormE"></span><em class="property">enumerator </em><code class="sig-name descname">denorm</code><a class="headerlink" href="#_CPPv4N4info9fp_config6denormE" title="Permalink to this definition">¶</a><br /></dt>
+<dt id="_CPPv4N4info9fp_config7inf_nanE">
+<span id="_CPPv3N4info9fp_config7inf_nanE"></span><span id="_CPPv2N4info9fp_config7inf_nanE"></span><em class="property">enumerator </em><code class="sig-name descname">inf_nan</code><a class="headerlink" href="#_CPPv4N4info9fp_config7inf_nanE" title="Permalink to this definition">¶</a><br /></dt>
+<dt id="_CPPv4N4info9fp_config16round_to_nearestE">
+<span id="_CPPv3N4info9fp_config16round_to_nearestE"></span><span id="_CPPv2N4info9fp_config16round_to_nearestE"></span><em class="property">enumerator </em><code class="sig-name descname">round_to_nearest</code><a class="headerlink" href="#_CPPv4N4info9fp_config16round_to_nearestE" title="Permalink to this definition">¶</a><br /></dt>
+<dt id="_CPPv4N4info9fp_config13round_to_zeroE">
+<span id="_CPPv3N4info9fp_config13round_to_zeroE"></span><span id="_CPPv2N4info9fp_config13round_to_zeroE"></span><em class="property">enumerator </em><code class="sig-name descname">round_to_zero</code><a class="headerlink" href="#_CPPv4N4info9fp_config13round_to_zeroE" title="Permalink to this definition">¶</a><br /></dt>
+<dt id="_CPPv4N4info9fp_config12round_to_infE">
+<span id="_CPPv3N4info9fp_config12round_to_infE"></span><span id="_CPPv2N4info9fp_config12round_to_infE"></span><em class="property">enumerator </em><code class="sig-name descname">round_to_inf</code><a class="headerlink" href="#_CPPv4N4info9fp_config12round_to_infE" title="Permalink to this definition">¶</a><br /></dt>
+<dt id="_CPPv4N4info9fp_config3fmaE">
+<span id="_CPPv3N4info9fp_config3fmaE"></span><span id="_CPPv2N4info9fp_config3fmaE"></span><em class="property">enumerator </em><code class="sig-name descname">fma</code><a class="headerlink" href="#_CPPv4N4info9fp_config3fmaE" title="Permalink to this definition">¶</a><br /></dt>
+<dt id="_CPPv4N4info9fp_config29correctly_rounded_divide_sqrtE">
+<span id="_CPPv3N4info9fp_config29correctly_rounded_divide_sqrtE"></span><span id="_CPPv2N4info9fp_config29correctly_rounded_divide_sqrtE"></span><em class="property">enumerator </em><code class="sig-name descname">correctly_rounded_divide_sqrt</code><a class="headerlink" href="#_CPPv4N4info9fp_config29correctly_rounded_divide_sqrtE" title="Permalink to this definition">¶</a><br /></dt>
+<dt id="_CPPv4N4info9fp_config10soft_floatE">
+<span id="_CPPv3N4info9fp_config10soft_floatE"></span><span id="_CPPv2N4info9fp_config10soft_floatE"></span><em class="property">enumerator </em><code class="sig-name descname">soft_float</code><a class="headerlink" href="#_CPPv4N4info9fp_config10soft_floatE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="cpp enum-class">
+<dt id="_CPPv4N4info21global_mem_cache_typeE">
+<span id="_CPPv3N4info21global_mem_cache_typeE"></span><span id="_CPPv2N4info21global_mem_cache_typeE"></span><em class="property">enum class </em><code class="sig-name descname">global_mem_cache_type</code><a class="headerlink" href="#_CPPv4N4info21global_mem_cache_typeE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>See <a class="reference external" href="https://www.khronos.org/sycl/">SYCL specification</a></p>
+<dl class="cpp enumerator">
+<dt id="_CPPv4N4info21global_mem_cache_type4noneE">
+<span id="_CPPv3N4info21global_mem_cache_type4noneE"></span><span id="_CPPv2N4info21global_mem_cache_type4noneE"></span><em class="property">enumerator </em><code class="sig-name descname">none</code><a class="headerlink" href="#_CPPv4N4info21global_mem_cache_type4noneE" title="Permalink to this definition">¶</a><br /></dt>
+<dt id="_CPPv4N4info21global_mem_cache_type9read_onlyE">
+<span id="_CPPv3N4info21global_mem_cache_type9read_onlyE"></span><span id="_CPPv2N4info21global_mem_cache_type9read_onlyE"></span><em class="property">enumerator </em><code class="sig-name descname">read_only</code><a class="headerlink" href="#_CPPv4N4info21global_mem_cache_type9read_onlyE" title="Permalink to this definition">¶</a><br /></dt>
+<dt id="_CPPv4N4info21global_mem_cache_type10read_writeE">
+<span id="_CPPv3N4info21global_mem_cache_type10read_writeE"></span><span id="_CPPv2N4info21global_mem_cache_type10read_writeE"></span><em class="property">enumerator </em><code class="sig-name descname">read_write</code><a class="headerlink" href="#_CPPv4N4info21global_mem_cache_type10read_writeE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="cpp enum-class">
+<dt id="_CPPv4N4info20execution_capabilityE">
+<span id="_CPPv3N4info20execution_capabilityE"></span><span id="_CPPv2N4info20execution_capabilityE"></span><em class="property">enum class </em><code class="sig-name descname">execution_capability</code><a class="headerlink" href="#_CPPv4N4info20execution_capabilityE" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>See <a class="reference external" href="https://www.khronos.org/sycl/">SYCL specification</a></p>
+<dl class="cpp enumerator">
+<dt id="_CPPv4N4info20execution_capability11exec_kernelE">
+<span id="_CPPv3N4info20execution_capability11exec_kernelE"></span><span id="_CPPv2N4info20execution_capability11exec_kernelE"></span><em class="property">enumerator </em><code class="sig-name descname">exec_kernel</code><a class="headerlink" href="#_CPPv4N4info20execution_capability11exec_kernelE" title="Permalink to this definition">¶</a><br /></dt>
+<dt id="_CPPv4N4info20execution_capability18exec_native_kernelE">
+<span id="_CPPv3N4info20execution_capability18exec_native_kernelE"></span><span id="_CPPv2N4info20execution_capability18exec_native_kernelE"></span><em class="property">enumerator </em><code class="sig-name descname">exec_native_kernel</code><a class="headerlink" href="#_CPPv4N4info20execution_capability18exec_native_kernelE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+    <div class="clearer"></div>
+  </div>
+    <div class="footer">
+      &copy;2020, Intel.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.0.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../../_sources/programming-interface/runtime/device.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

@@ -1,0 +1,244 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Context &#8212; DPC++ Reference  documentation</title>
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/language_data.js"></script>
+    <link rel="shortcut icon" href="../../_static/favicons.png"/>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Device" href="device.html" />
+    <link rel="prev" title="class platform" href="platform.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  <div class="document">
+    
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../index.html">DPC++ Reference</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../programming-model/index.html">Programming Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../language/index.html">Language</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Programming Interface</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../index.html#header-file">Header File</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../index.html#namespaces">Namespaces</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html#class-descriptions">Class Descriptions</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="index.html">Runtime Classes</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="device-selector.html">Device Selector</a></li>
+<li class="toctree-l4"><a class="reference internal" href="platform.html">class platform</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Context</a></li>
+<li class="toctree-l4"><a class="reference internal" href="device.html">Device</a></li>
+<li class="toctree-l4"><a class="reference internal" href="queue.html">Queue</a></li>
+<li class="toctree-l4"><a class="reference internal" href="event.html">Event</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../data/index.html">Data Access</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../parallelism/index.html">Expressing Parallelism</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../error-handling/index.html">Error Handling</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../stream.html">Stream</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../vec-and-swizzled-vec.html">Vec and Swizzled Vec</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../built-in-types-&amp;amp-functions.html">Built-in Types &amp; Functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../property-interface.html">Property Interface</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../version.html">Version</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../notices-and-disclaimers.html">Notices and Disclaimers</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.html">Programming Interface</a><ul>
+  <li><a href="index.html">Runtime Classes</a><ul>
+      <li>Previous: <a href="platform.html" title="previous chapter">class platform</a></li>
+      <li>Next: <a href="device.html" title="next chapter">Device</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="context">
+<span id="id1"></span><h1>Context<a class="headerlink" href="#context" title="Permalink to this headline">¶</a></h1>
+<p>A context encapsulates a platform and a collection of devices. For more
+information, see <a class="reference internal" href="../../programming-model/platform-model.html#platform-model"><span class="std std-ref">Platform Model</span></a>.</p>
+<p>The class contains multiple constructors enabling creation from
+platforms, devices, and context as arguments.</p>
+<p>The class contains member functions for querying information about the
+instantiated context:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">get_platform()</span></code> – obtain the platform associated with the context</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">get_device()</span></code> – obtain the device associated with the context</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">is_host()</span></code> – return true if context is a host context</p></li>
+</ul>
+<dl class="cpp class">
+<dt id="_CPPv47context">
+<span id="_CPPv37context"></span><span id="_CPPv27context"></span><em class="property">class </em><code class="sig-name descname">context</code><a class="headerlink" href="#_CPPv47context" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p class="rubric">Constructors</p>
+<dl class="cpp function">
+<dt id="_CPPv4N7context7contextERK13property_list">
+<span id="_CPPv3N7context7contextERK13property_list"></span><span id="_CPPv2N7context7contextERK13property_list"></span><span id="context::context__property_listCR"></span><em class="property">explicit</em> <code class="sig-name descname">context</code><span class="sig-paren">(</span><em class="property">const</em> <a class="reference internal" href="../property-interface.html#_CPPv413property_list" title="property_list">property_list</a> &amp;<em>propList</em> = {}<span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N7context7contextERK13property_list" title="Permalink to this definition">¶</a><br /></dt>
+<dt id="_CPPv4N7context7contextE13async_handlerRK13property_list">
+<span id="_CPPv3N7context7contextE13async_handlerRK13property_list"></span><span id="_CPPv2N7context7contextE13async_handlerRK13property_list"></span><span id="context::context__async_handler.property_listCR"></span><code class="sig-name descname">context</code><span class="sig-paren">(</span><a class="reference internal" href="../error-handling/exception.html#_CPPv413async_handler" title="async_handler">async_handler</a> <em>asyncHandler</em>, <em class="property">const</em> <a class="reference internal" href="../property-interface.html#_CPPv413property_list" title="property_list">property_list</a> &amp;<em>propList</em> = {}<span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N7context7contextE13async_handlerRK13property_list" title="Permalink to this definition">¶</a><br /></dt>
+<dt id="_CPPv4N7context7contextERK6deviceRK13property_list">
+<span id="_CPPv3N7context7contextERK6deviceRK13property_list"></span><span id="_CPPv2N7context7contextERK6deviceRK13property_list"></span><span id="context::context__deviceCR.property_listCR"></span><code class="sig-name descname">context</code><span class="sig-paren">(</span><em class="property">const</em> <a class="reference internal" href="device.html#_CPPv46device" title="device">device</a> &amp;<em>dev</em>, <em class="property">const</em> <a class="reference internal" href="../property-interface.html#_CPPv413property_list" title="property_list">property_list</a> &amp;<em>propList</em> = {}<span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N7context7contextERK6deviceRK13property_list" title="Permalink to this definition">¶</a><br /></dt>
+<dt id="_CPPv4N7context7contextERK6device13async_handlerRK13property_list">
+<span id="_CPPv3N7context7contextERK6device13async_handlerRK13property_list"></span><span id="_CPPv2N7context7contextERK6device13async_handlerRK13property_list"></span><span id="context::context__deviceCR.async_handler.property_listCR"></span><code class="sig-name descname">context</code><span class="sig-paren">(</span><em class="property">const</em> <a class="reference internal" href="device.html#_CPPv46device" title="device">device</a> &amp;<em>dev</em>, <a class="reference internal" href="../error-handling/exception.html#_CPPv413async_handler" title="async_handler">async_handler</a> <em>asyncHandler</em>, <em class="property">const</em> <a class="reference internal" href="../property-interface.html#_CPPv413property_list" title="property_list">property_list</a> &amp;<em>propList</em> = {}<span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N7context7contextERK6device13async_handlerRK13property_list" title="Permalink to this definition">¶</a><br /></dt>
+<dt id="_CPPv4N7context7contextERK8platformRK13property_list">
+<span id="_CPPv3N7context7contextERK8platformRK13property_list"></span><span id="_CPPv2N7context7contextERK8platformRK13property_list"></span><span id="context::context__platformCR.property_listCR"></span><code class="sig-name descname">context</code><span class="sig-paren">(</span><em class="property">const</em> <a class="reference internal" href="platform.html#_CPPv48platform" title="platform">platform</a> &amp;<em>plt</em>, <em class="property">const</em> <a class="reference internal" href="../property-interface.html#_CPPv413property_list" title="property_list">property_list</a> &amp;<em>propList</em> = {}<span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N7context7contextERK8platformRK13property_list" title="Permalink to this definition">¶</a><br /></dt>
+<dt id="_CPPv4N7context7contextERK8platform13async_handlerRK13property_list">
+<span id="_CPPv3N7context7contextERK8platform13async_handlerRK13property_list"></span><span id="_CPPv2N7context7contextERK8platform13async_handlerRK13property_list"></span><span id="context::context__platformCR.async_handler.property_listCR"></span><code class="sig-name descname">context</code><span class="sig-paren">(</span><em class="property">const</em> <a class="reference internal" href="platform.html#_CPPv48platform" title="platform">platform</a> &amp;<em>plt</em>, <a class="reference internal" href="../error-handling/exception.html#_CPPv413async_handler" title="async_handler">async_handler</a> <em>asyncHandler</em>, <em class="property">const</em> <a class="reference internal" href="../property-interface.html#_CPPv413property_list" title="property_list">property_list</a> &amp;<em>propList</em> = {}<span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N7context7contextERK8platform13async_handlerRK13property_list" title="Permalink to this definition">¶</a><br /></dt>
+<dt id="_CPPv4N7context7contextERK12vector_classI6deviceERK13property_list">
+<span id="_CPPv3N7context7contextERK12vector_classI6deviceERK13property_list"></span><span id="_CPPv2N7context7contextERK12vector_classI6deviceERK13property_list"></span><span id="context::context__vector_class:device:CR.property_listCR"></span><code class="sig-name descname">context</code><span class="sig-paren">(</span><em class="property">const</em> <a class="reference internal" href="../../language/index.html#_CPPv4I00E12vector_class" title="vector_class">vector_class</a>&lt;<a class="reference internal" href="device.html#_CPPv46device" title="device">device</a>&gt; &amp;<em>deviceList</em>, <em class="property">const</em> <a class="reference internal" href="../property-interface.html#_CPPv413property_list" title="property_list">property_list</a> &amp;<em>propList</em> = {}<span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N7context7contextERK12vector_classI6deviceERK13property_list" title="Permalink to this definition">¶</a><br /></dt>
+<dt id="_CPPv4N7context7contextERK12vector_classI6deviceE13async_handlerRK13property_list">
+<span id="_CPPv3N7context7contextERK12vector_classI6deviceE13async_handlerRK13property_list"></span><span id="_CPPv2N7context7contextERK12vector_classI6deviceE13async_handlerRK13property_list"></span><span id="context::context__vector_class:device:CR.async_handler.property_listCR"></span><code class="sig-name descname">context</code><span class="sig-paren">(</span><em class="property">const</em> <a class="reference internal" href="../../language/index.html#_CPPv4I00E12vector_class" title="vector_class">vector_class</a>&lt;<a class="reference internal" href="device.html#_CPPv46device" title="device">device</a>&gt; &amp;<em>deviceList</em>, <a class="reference internal" href="../error-handling/exception.html#_CPPv413async_handler" title="async_handler">async_handler</a> <em>asyncHandler</em>, <em class="property">const</em> <a class="reference internal" href="../property-interface.html#_CPPv413property_list" title="property_list">property_list</a> &amp;<em>propList</em> = {}<span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N7context7contextERK12vector_classI6deviceE13async_handlerRK13property_list" title="Permalink to this definition">¶</a><br /></dt>
+<dt id="_CPPv4N7context7contextE10cl_context13async_handler">
+<span id="_CPPv3N7context7contextE10cl_context13async_handler"></span><span id="_CPPv2N7context7contextE10cl_context13async_handler"></span><span id="context::context__cl_context.async_handler"></span><code class="sig-name descname">context</code><span class="sig-paren">(</span>cl_context <em>clContext</em>, <a class="reference internal" href="../error-handling/exception.html#_CPPv413async_handler" title="async_handler">async_handler</a> <em>asyncHandler</em> = {}<span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N7context7contextE10cl_context13async_handler" title="Permalink to this definition">¶</a><br /></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>asyncHandler</strong> – </p></li>
+<li><p><strong>cl_context</strong> – </p></li>
+<li><p><strong>dev</strong> – </p></li>
+<li><p><strong>deviceList</strong> – </p></li>
+<li><p><strong>plt</strong> – </p></li>
+<li><p><strong>propList</strong> – </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<p class="rubric">Property Interface Members</p>
+<dl class="cpp function">
+<dt id="_CPPv4NK7context3getEv">
+<span id="_CPPv3NK7context3getEv"></span><span id="_CPPv2NK7context3getEv"></span><span id="context::getC"></span>cl_context <code class="sig-name descname">get</code><span class="sig-paren">(</span><span class="sig-paren">)</span> <em class="property">const</em><a class="headerlink" href="#_CPPv4NK7context3getEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt id="_CPPv4NK7context7is_hostEv">
+<span id="_CPPv3NK7context7is_hostEv"></span><span id="_CPPv2NK7context7is_hostEv"></span><span id="context::is_hostC"></span>bool <code class="sig-name descname">is_host</code><span class="sig-paren">(</span><span class="sig-paren">)</span> <em class="property">const</em><a class="headerlink" href="#_CPPv4NK7context7is_hostEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt id="_CPPv4NK7context12get_platformEv">
+<span id="_CPPv3NK7context12get_platformEv"></span><span id="_CPPv2NK7context12get_platformEv"></span><span id="context::get_platformC"></span><a class="reference internal" href="platform.html#_CPPv48platform" title="platform">platform</a> <code class="sig-name descname">get_platform</code><span class="sig-paren">(</span><span class="sig-paren">)</span> <em class="property">const</em><a class="headerlink" href="#_CPPv4NK7context12get_platformEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt id="_CPPv4NK7context11get_devicesEv">
+<span id="_CPPv3NK7context11get_devicesEv"></span><span id="_CPPv2NK7context11get_devicesEv"></span><span id="context::get_devicesC"></span><a class="reference internal" href="../../language/index.html#_CPPv4I00E12vector_class" title="vector_class">vector_class</a>&lt;<a class="reference internal" href="device.html#_CPPv46device" title="device">device</a>&gt; <code class="sig-name descname">get_devices</code><span class="sig-paren">(</span><span class="sig-paren">)</span> <em class="property">const</em><a class="headerlink" href="#_CPPv4NK7context11get_devicesEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt id="_CPPv4I_N4info7contextEENK7context8get_infoEN4info12param_traitsIN4info7contextE5paramE11return_typeEv">
+<span id="_CPPv3I_N4info7contextEENK7context8get_infoEv"></span><span id="_CPPv2I_N4info7contextEENK7context8get_infoEv"></span>template&lt;info::context <code class="sig-name descname">param</code>&gt;<br /><em class="property">typename</em> info::param_traits&lt;info::context, <a class="reference internal" href="#_CPPv4I_N4info7contextEENK7context8get_infoEN4info12param_traitsIN4info7contextE5paramE11return_typeEv" title="context::get_info::param">param</a>&gt;::return_type <code class="sig-name descname">get_info</code><span class="sig-paren">(</span><span class="sig-paren">)</span> <em class="property">const</em><a class="headerlink" href="#_CPPv4I_N4info7contextEENK7context8get_infoEN4info12param_traitsIN4info7contextE5paramE11return_typeEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Template Parameters</dt>
+<dd class="field-odd"><p><strong>param</strong> – </p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+    <div class="clearer"></div>
+  </div>
+    <div class="footer">
+      &copy;2020, Intel.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.0.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../../_sources/programming-interface/runtime/context.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

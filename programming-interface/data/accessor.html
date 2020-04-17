@@ -1,0 +1,356 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Accessor &#8212; DPC++ Reference  documentation</title>
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/language_data.js"></script>
+    <link rel="shortcut icon" href="../../_static/favicons.png"/>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Atomic" href="atomic.html" />
+    <link rel="prev" title="Data Access" href="index.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  <div class="document">
+    
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../index.html">DPC++ Reference</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../programming-model/index.html">Programming Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../language/index.html">Language</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Programming Interface</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../index.html#header-file">Header File</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../index.html#namespaces">Namespaces</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html#class-descriptions">Class Descriptions</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../runtime/index.html">Runtime Classes</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="index.html">Data Access</a><ul class="current">
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Accessor</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#buffer-accessor">Buffer Accessor</a></li>
+<li class="toctree-l4"><a class="reference internal" href="atomic.html">Atomic</a></li>
+<li class="toctree-l4"><a class="reference internal" href="buffer.html">Buffer</a></li>
+<li class="toctree-l4"><a class="reference internal" href="image.html">Image</a></li>
+<li class="toctree-l4"><a class="reference internal" href="multi-pointer.html">Address Spaces</a></li>
+<li class="toctree-l4"><a class="reference internal" href="sampler.html">Samplers</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../parallelism/index.html">Expressing Parallelism</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../error-handling/index.html">Error Handling</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../stream.html">Stream</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../vec-and-swizzled-vec.html">Vec and Swizzled Vec</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../built-in-types-&amp;amp-functions.html">Built-in Types &amp; Functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../property-interface.html">Property Interface</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../version.html">Version</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../notices-and-disclaimers.html">Notices and Disclaimers</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.html">Programming Interface</a><ul>
+  <li><a href="index.html">Data Access</a><ul>
+      <li>Previous: <a href="index.html" title="previous chapter">Data Access</a></li>
+      <li>Next: <a href="atomic.html" title="next chapter">Atomic</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="accessor">
+<span id="id1"></span><h1>Accessor<a class="headerlink" href="#accessor" title="Permalink to this headline">¶</a></h1>
+<p>A DPC++ <code class="docutils literal notranslate"><span class="pre">accessor</span></code> encapsulates reading and writing memory objects
+which can be buffers, images, or device local memory. Creating an
+accessor requires a method to reference the desired access target.
+Construction also requires the type of the memory object, the
+dimensionality of the memory object, the access mode, and a placeholder
+argument.</p>
+<p>A common method of construction can employ the <code class="docutils literal notranslate"><span class="pre">get_access</span></code> method of
+the memory object to specify the object and infer the other parameters
+from that memory object.</p>
+<p>See <a class="reference internal" href="../../programming-model/accessors.html#accessors"><span class="std std-ref">Accessors</span></a> for access modes and targets.</p>
+<p>Placeholder accessors are those created independent of a command group
+and then later associated with a particular memory object. Designation
+of a placeholder accessor is communicated via the placeholder argument
+set to <code class="docutils literal notranslate"><span class="pre">access::placeholder::true_t</span></code> if so and
+<code class="docutils literal notranslate"><span class="pre">access::placeholder::false_t</span></code> otherwise.</p>
+<p>Once an accessor is created, query member functions to review accessor
+information. These member functions include:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">is_placeholder</span></code> – return true if accessor is a placeholder, not
+yet associated with a memory object, false otherwise</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">get_size</span></code> – obtain the size (in bytes) of the memory object</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">get_count</span></code> – obtain the number of elements of the memory object</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">get_range</span></code> – obtain the range of the memory object, where range is
+a range class</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">get_offset</span></code> – obtain the offset of the memory object</p></li>
+</ul>
+<p>An accessor can reference a subset of a memory object; this is the
+offset of the accessor into the memory object.</p>
+</div>
+<div class="section" id="buffer-accessor">
+<h1>Buffer Accessor<a class="headerlink" href="#buffer-accessor" title="Permalink to this headline">¶</a></h1>
+<dl class="cpp class">
+<dt id="_CPPv4I0_i_N6access4modeE_N6access6targetE_N6access11placeholderEE8accessor">
+<span id="_CPPv3I0_i_N6access4modeE_N6access6targetE_N6access11placeholderEE8accessor"></span><span id="_CPPv2I0_i_N6access4modeE_N6access6targetE_N6access11placeholderEE8accessor"></span>template&lt;typename <code class="sig-name descname">dataT</code>, int <code class="sig-name descname">dimensions</code>, access::mode <code class="sig-name descname">accessmode</code>, access::target <code class="sig-name descname">accessTarget</code> = access::target::global_buffer, access::placeholder <code class="sig-name descname">isPlaceholder</code> = access::placeholder::false_t&gt;<br /><em class="property">class </em><code class="sig-name descname">accessor</code><a class="headerlink" href="#_CPPv4I0_i_N6access4modeE_N6access6targetE_N6access11placeholderEE8accessor" title="Permalink to this definition">¶</a><br /></dt>
+<dd><blockquote>
+<div><dl class="field-list simple">
+<dt class="field-odd">tparam dataT</dt>
+<dd class="field-odd"><p></p></dd>
+<dt class="field-even">tparam dimensions</dt>
+<dd class="field-even"><p></p></dd>
+<dt class="field-odd">tparam accessmode</dt>
+<dd class="field-odd"><p></p></dd>
+<dt class="field-even">tparam accessTarget</dt>
+<dd class="field-even"><p></p></dd>
+<dt class="field-odd">tparam isPlacehodler</dt>
+<dd class="field-odd"><p></p></dd>
+</dl>
+</div></blockquote>
+<dl class="cpp type">
+<dt id="_CPPv4N8accessor10value_typeE">
+<span id="_CPPv3N8accessor10value_typeE"></span><span id="_CPPv2N8accessor10value_typeE"></span><em class="property">using </em><code class="sig-name descname">value_type</code> = <a class="reference internal" href="#_CPPv4I0_i_N6access4modeE_N6access6targetE_N6access11placeholderEE8accessor" title="accessor::dataT">dataT</a><a class="headerlink" href="#_CPPv4N8accessor10value_typeE" title="Permalink to this definition">¶</a><br /></dt>
+<dt id="_CPPv4N8accessor9referenceE">
+<span id="_CPPv3N8accessor9referenceE"></span><span id="_CPPv2N8accessor9referenceE"></span><em class="property">using </em><code class="sig-name descname">reference</code> = <a class="reference internal" href="#_CPPv4I0_i_N6access4modeE_N6access6targetE_N6access11placeholderEE8accessor" title="accessor::dataT">dataT</a>&amp;<a class="headerlink" href="#_CPPv4N8accessor9referenceE" title="Permalink to this definition">¶</a><br /></dt>
+<dt id="_CPPv4N8accessor15const_referenceE">
+<span id="_CPPv3N8accessor15const_referenceE"></span><span id="_CPPv2N8accessor15const_referenceE"></span><em class="property">using </em><code class="sig-name descname">const_reference</code> = <em class="property">const</em> <a class="reference internal" href="#_CPPv4I0_i_N6access4modeE_N6access6targetE_N6access11placeholderEE8accessor" title="accessor::dataT">dataT</a>&amp;<a class="headerlink" href="#_CPPv4N8accessor15const_referenceE" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<p class="rubric">Constructors</p>
+<dl class="cpp function">
+<dt id="_CPPv4I0EN8accessor8accessorER6bufferI5dataTXL1EE10AllocatorTERK13property_list">
+<span id="_CPPv3I0EN8accessor8accessorER6bufferI5dataTXL1EE10AllocatorTERK13property_list"></span><span id="_CPPv2I0EN8accessor8accessorER6bufferI5dataTX1E10AllocatorTERK13property_list"></span>template&lt;typename <code class="sig-name descname">AllocatorT</code>&gt;<br /><code class="sig-name descname">accessor</code><span class="sig-paren">(</span><a class="reference internal" href="buffer.html#_CPPv4I0_i0E6buffer" title="buffer">buffer</a>&lt;<a class="reference internal" href="#_CPPv4I0_i_N6access4modeE_N6access6targetE_N6access11placeholderEE8accessor" title="accessor::dataT">dataT</a>, 1, <a class="reference internal" href="#_CPPv4I0EN8accessor8accessorER6bufferI5dataTXL1EE10AllocatorTERK13property_list" title="accessor::accessor::AllocatorT">AllocatorT</a>&gt; &amp;<em>bufferRef</em>, <em class="property">const</em> <a class="reference internal" href="../property-interface.html#_CPPv413property_list" title="property_list">property_list</a> &amp;<em>propList</em> = {}<span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0EN8accessor8accessorER6bufferI5dataTXL1EE10AllocatorTERK13property_list" title="Permalink to this definition">¶</a><br /></dt>
+<dt id="_CPPv4I0EN8accessor8accessorER6bufferI5dataTXL1EE10AllocatorTER7handlerRK13property_list">
+<span id="_CPPv3I0EN8accessor8accessorER6bufferI5dataTXL1EE10AllocatorTER7handlerRK13property_list"></span><span id="_CPPv2I0EN8accessor8accessorER6bufferI5dataTX1E10AllocatorTER7handlerRK13property_list"></span>template&lt;typename <code class="sig-name descname">AllocatorT</code>&gt;<br /><code class="sig-name descname">accessor</code><span class="sig-paren">(</span><a class="reference internal" href="buffer.html#_CPPv4I0_i0E6buffer" title="buffer">buffer</a>&lt;<a class="reference internal" href="#_CPPv4I0_i_N6access4modeE_N6access6targetE_N6access11placeholderEE8accessor" title="accessor::dataT">dataT</a>, 1, <a class="reference internal" href="#_CPPv4I0EN8accessor8accessorER6bufferI5dataTXL1EE10AllocatorTER7handlerRK13property_list" title="accessor::accessor::AllocatorT">AllocatorT</a>&gt; &amp;<em>bufferRef</em>, <a class="reference internal" href="../parallelism/command-group-handler.html#_CPPv47handler" title="handler">handler</a> &amp;<em>commandGroupHandlerRef</em>, <em class="property">const</em> <a class="reference internal" href="../property-interface.html#_CPPv413property_list" title="property_list">property_list</a> &amp;<em>propList</em> = {}<span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0EN8accessor8accessorER6bufferI5dataTXL1EE10AllocatorTER7handlerRK13property_list" title="Permalink to this definition">¶</a><br /></dt>
+<dt id="_CPPv4I0EN8accessor8accessorER6bufferI5dataT10dimensions10AllocatorTERK13property_list">
+<span id="_CPPv3I0EN8accessor8accessorER6bufferI5dataT10dimensions10AllocatorTERK13property_list"></span><span id="_CPPv2I0EN8accessor8accessorER6bufferI5dataT10dimensions10AllocatorTERK13property_list"></span>template&lt;typename <code class="sig-name descname">AllocatorT</code>&gt;<br /><code class="sig-name descname">accessor</code><span class="sig-paren">(</span><a class="reference internal" href="buffer.html#_CPPv4I0_i0E6buffer" title="buffer">buffer</a>&lt;<a class="reference internal" href="#_CPPv4I0_i_N6access4modeE_N6access6targetE_N6access11placeholderEE8accessor" title="accessor::dataT">dataT</a>, <a class="reference internal" href="#_CPPv4I0_i_N6access4modeE_N6access6targetE_N6access11placeholderEE8accessor" title="accessor::dimensions">dimensions</a>, <a class="reference internal" href="#_CPPv4I0EN8accessor8accessorER6bufferI5dataT10dimensions10AllocatorTERK13property_list" title="accessor::accessor::AllocatorT">AllocatorT</a>&gt; &amp;<em>bufferRef</em>, <em class="property">const</em> <a class="reference internal" href="../property-interface.html#_CPPv413property_list" title="property_list">property_list</a> &amp;<em>propList</em> = {}<span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0EN8accessor8accessorER6bufferI5dataT10dimensions10AllocatorTERK13property_list" title="Permalink to this definition">¶</a><br /></dt>
+<dt id="_CPPv4I0EN8accessor8accessorER6bufferI5dataT10dimensions10AllocatorTER7handlerRK13property_list">
+<span id="_CPPv3I0EN8accessor8accessorER6bufferI5dataT10dimensions10AllocatorTER7handlerRK13property_list"></span><span id="_CPPv2I0EN8accessor8accessorER6bufferI5dataT10dimensions10AllocatorTER7handlerRK13property_list"></span>template&lt;typename <code class="sig-name descname">AllocatorT</code>&gt;<br /><code class="sig-name descname">accessor</code><span class="sig-paren">(</span><a class="reference internal" href="buffer.html#_CPPv4I0_i0E6buffer" title="buffer">buffer</a>&lt;<a class="reference internal" href="#_CPPv4I0_i_N6access4modeE_N6access6targetE_N6access11placeholderEE8accessor" title="accessor::dataT">dataT</a>, <a class="reference internal" href="#_CPPv4I0_i_N6access4modeE_N6access6targetE_N6access11placeholderEE8accessor" title="accessor::dimensions">dimensions</a>, <a class="reference internal" href="#_CPPv4I0EN8accessor8accessorER6bufferI5dataT10dimensions10AllocatorTER7handlerRK13property_list" title="accessor::accessor::AllocatorT">AllocatorT</a>&gt; &amp;<em>bufferRef</em>, <a class="reference internal" href="../parallelism/command-group-handler.html#_CPPv47handler" title="handler">handler</a> &amp;<em>commandGroupHandlerRef</em>, <em class="property">const</em> <a class="reference internal" href="../property-interface.html#_CPPv413property_list" title="property_list">property_list</a> &amp;<em>propList</em> = {}<span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0EN8accessor8accessorER6bufferI5dataT10dimensions10AllocatorTER7handlerRK13property_list" title="Permalink to this definition">¶</a><br /></dt>
+<dt id="_CPPv4I0EN8accessor8accessorER6bufferI5dataT10dimensions10AllocatorTE5rangeI10dimensionsERK13property_list">
+<span id="_CPPv3I0EN8accessor8accessorER6bufferI5dataT10dimensions10AllocatorTE5rangeI10dimensionsERK13property_list"></span><span id="_CPPv2I0EN8accessor8accessorER6bufferI5dataT10dimensions10AllocatorTE5rangeI10dimensionsERK13property_list"></span>template&lt;typename <code class="sig-name descname">AllocatorT</code>&gt;<br /><code class="sig-name descname">accessor</code><span class="sig-paren">(</span><a class="reference internal" href="buffer.html#_CPPv4I0_i0E6buffer" title="buffer">buffer</a>&lt;<a class="reference internal" href="#_CPPv4I0_i_N6access4modeE_N6access6targetE_N6access11placeholderEE8accessor" title="accessor::dataT">dataT</a>, <a class="reference internal" href="#_CPPv4I0_i_N6access4modeE_N6access6targetE_N6access11placeholderEE8accessor" title="accessor::dimensions">dimensions</a>, <a class="reference internal" href="#_CPPv4I0EN8accessor8accessorER6bufferI5dataT10dimensions10AllocatorTE5rangeI10dimensionsERK13property_list" title="accessor::accessor::AllocatorT">AllocatorT</a>&gt; &amp;<em>bufferRef</em>, <a class="reference internal" href="../parallelism/range.html#_CPPv4I_iE5range" title="range">range</a>&lt;<a class="reference internal" href="#_CPPv4I0_i_N6access4modeE_N6access6targetE_N6access11placeholderEE8accessor" title="accessor::dimensions">dimensions</a>&gt; <em>accessRange</em>, <em class="property">const</em> <a class="reference internal" href="../property-interface.html#_CPPv413property_list" title="property_list">property_list</a> &amp;<em>propList</em> = {}<span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0EN8accessor8accessorER6bufferI5dataT10dimensions10AllocatorTE5rangeI10dimensionsERK13property_list" title="Permalink to this definition">¶</a><br /></dt>
+<dt id="_CPPv4I0EN8accessor8accessorER6bufferI5dataT10dimensions10AllocatorTE5rangeI10dimensionsE2idI10dimensionsERK13property_list">
+<span id="_CPPv3I0EN8accessor8accessorER6bufferI5dataT10dimensions10AllocatorTE5rangeI10dimensionsE2idI10dimensionsERK13property_list"></span><span id="_CPPv2I0EN8accessor8accessorER6bufferI5dataT10dimensions10AllocatorTE5rangeI10dimensionsE2idI10dimensionsERK13property_list"></span>template&lt;typename <code class="sig-name descname">AllocatorT</code>&gt;<br /><code class="sig-name descname">accessor</code><span class="sig-paren">(</span><a class="reference internal" href="buffer.html#_CPPv4I0_i0E6buffer" title="buffer">buffer</a>&lt;<a class="reference internal" href="#_CPPv4I0_i_N6access4modeE_N6access6targetE_N6access11placeholderEE8accessor" title="accessor::dataT">dataT</a>, <a class="reference internal" href="#_CPPv4I0_i_N6access4modeE_N6access6targetE_N6access11placeholderEE8accessor" title="accessor::dimensions">dimensions</a>, <a class="reference internal" href="#_CPPv4I0EN8accessor8accessorER6bufferI5dataT10dimensions10AllocatorTE5rangeI10dimensionsE2idI10dimensionsERK13property_list" title="accessor::accessor::AllocatorT">AllocatorT</a>&gt; &amp;<em>bufferRef</em>, <a class="reference internal" href="../parallelism/range.html#_CPPv4I_iE5range" title="range">range</a>&lt;<a class="reference internal" href="#_CPPv4I0_i_N6access4modeE_N6access6targetE_N6access11placeholderEE8accessor" title="accessor::dimensions">dimensions</a>&gt; <em>accessRange</em>, <a class="reference internal" href="../parallelism/id.html#_CPPv4I_iE2id" title="id">id</a>&lt;<a class="reference internal" href="#_CPPv4I0_i_N6access4modeE_N6access6targetE_N6access11placeholderEE8accessor" title="accessor::dimensions">dimensions</a>&gt; <em>accessOffset</em>, <em class="property">const</em> <a class="reference internal" href="../property-interface.html#_CPPv413property_list" title="property_list">property_list</a> &amp;<em>propList</em> = {}<span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0EN8accessor8accessorER6bufferI5dataT10dimensions10AllocatorTE5rangeI10dimensionsE2idI10dimensionsERK13property_list" title="Permalink to this definition">¶</a><br /></dt>
+<dt id="_CPPv4I0EN8accessor8accessorER6bufferI5dataT10dimensions10AllocatorTER7handler5rangeI10dimensionsERK13property_list">
+<span id="_CPPv3I0EN8accessor8accessorER6bufferI5dataT10dimensions10AllocatorTER7handler5rangeI10dimensionsERK13property_list"></span><span id="_CPPv2I0EN8accessor8accessorER6bufferI5dataT10dimensions10AllocatorTER7handler5rangeI10dimensionsERK13property_list"></span>template&lt;typename <code class="sig-name descname">AllocatorT</code>&gt;<br /><code class="sig-name descname">accessor</code><span class="sig-paren">(</span><a class="reference internal" href="buffer.html#_CPPv4I0_i0E6buffer" title="buffer">buffer</a>&lt;<a class="reference internal" href="#_CPPv4I0_i_N6access4modeE_N6access6targetE_N6access11placeholderEE8accessor" title="accessor::dataT">dataT</a>, <a class="reference internal" href="#_CPPv4I0_i_N6access4modeE_N6access6targetE_N6access11placeholderEE8accessor" title="accessor::dimensions">dimensions</a>, <a class="reference internal" href="#_CPPv4I0EN8accessor8accessorER6bufferI5dataT10dimensions10AllocatorTER7handler5rangeI10dimensionsERK13property_list" title="accessor::accessor::AllocatorT">AllocatorT</a>&gt; &amp;<em>bufferRef</em>, <a class="reference internal" href="../parallelism/command-group-handler.html#_CPPv47handler" title="handler">handler</a> &amp;<em>commandGroupHandlerRef</em>, <a class="reference internal" href="../parallelism/range.html#_CPPv4I_iE5range" title="range">range</a>&lt;<a class="reference internal" href="#_CPPv4I0_i_N6access4modeE_N6access6targetE_N6access11placeholderEE8accessor" title="accessor::dimensions">dimensions</a>&gt; <em>accessRange</em>, <em class="property">const</em> <a class="reference internal" href="../property-interface.html#_CPPv413property_list" title="property_list">property_list</a> &amp;<em>propList</em> = {}<span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0EN8accessor8accessorER6bufferI5dataT10dimensions10AllocatorTER7handler5rangeI10dimensionsERK13property_list" title="Permalink to this definition">¶</a><br /></dt>
+<dt id="_CPPv4I0EN8accessor8accessorER6bufferI5dataT10dimensions10AllocatorTER7handler5rangeI10dimensionsE2idI10dimensionsERK13property_list">
+<span id="_CPPv3I0EN8accessor8accessorER6bufferI5dataT10dimensions10AllocatorTER7handler5rangeI10dimensionsE2idI10dimensionsERK13property_list"></span><span id="_CPPv2I0EN8accessor8accessorER6bufferI5dataT10dimensions10AllocatorTER7handler5rangeI10dimensionsE2idI10dimensionsERK13property_list"></span>template&lt;typename <code class="sig-name descname">AllocatorT</code>&gt;<br /><code class="sig-name descname">accessor</code><span class="sig-paren">(</span><a class="reference internal" href="buffer.html#_CPPv4I0_i0E6buffer" title="buffer">buffer</a>&lt;<a class="reference internal" href="#_CPPv4I0_i_N6access4modeE_N6access6targetE_N6access11placeholderEE8accessor" title="accessor::dataT">dataT</a>, <a class="reference internal" href="#_CPPv4I0_i_N6access4modeE_N6access6targetE_N6access11placeholderEE8accessor" title="accessor::dimensions">dimensions</a>, <a class="reference internal" href="#_CPPv4I0EN8accessor8accessorER6bufferI5dataT10dimensions10AllocatorTER7handler5rangeI10dimensionsE2idI10dimensionsERK13property_list" title="accessor::accessor::AllocatorT">AllocatorT</a>&gt; &amp;<em>bufferRef</em>, <a class="reference internal" href="../parallelism/command-group-handler.html#_CPPv47handler" title="handler">handler</a> &amp;<em>commandGroupHandlerRef</em>, <a class="reference internal" href="../parallelism/range.html#_CPPv4I_iE5range" title="range">range</a>&lt;<a class="reference internal" href="#_CPPv4I0_i_N6access4modeE_N6access6targetE_N6access11placeholderEE8accessor" title="accessor::dimensions">dimensions</a>&gt; <em>accessRange</em>, <a class="reference internal" href="../parallelism/id.html#_CPPv4I_iE2id" title="id">id</a>&lt;<a class="reference internal" href="#_CPPv4I0_i_N6access4modeE_N6access6targetE_N6access11placeholderEE8accessor" title="accessor::dimensions">dimensions</a>&gt; <em>accessOffset</em>, <em class="property">const</em> <a class="reference internal" href="../property-interface.html#_CPPv413property_list" title="property_list">property_list</a> &amp;<em>propList</em> = {}<span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0EN8accessor8accessorER6bufferI5dataT10dimensions10AllocatorTER7handler5rangeI10dimensionsE2idI10dimensionsERK13property_list" title="Permalink to this definition">¶</a><br /></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Template Parameters</dt>
+<dd class="field-odd"><p><strong>AllocatorT</strong> – </p>
+</dd>
+<dt class="field-even">Parameters</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>bufferRef</strong> – </p></li>
+<li><p><strong>propList</strong> – </p></li>
+<li><p><strong>commandGroupHandlerRef</strong> – </p></li>
+<li><p><strong>accessRange</strong> – </p></li>
+<li><p><strong>accessOffset</strong> – </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt id="_CPPv4NK8accessor14is_placeholderEv">
+<span id="_CPPv3NK8accessor14is_placeholderEv"></span><span id="_CPPv2NK8accessor14is_placeholderEv"></span><span id="accessor::is_placeholderCCE"></span><em class="property">constexpr</em> bool <code class="sig-name descname">is_placeholder</code><span class="sig-paren">(</span><span class="sig-paren">)</span> <em class="property">const</em><a class="headerlink" href="#_CPPv4NK8accessor14is_placeholderEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt id="_CPPv4NK8accessor8get_sizeEv">
+<span id="_CPPv3NK8accessor8get_sizeEv"></span><span id="_CPPv2NK8accessor8get_sizeEv"></span><span id="accessor::get_sizeC"></span>size_t <code class="sig-name descname">get_size</code><span class="sig-paren">(</span><span class="sig-paren">)</span> <em class="property">const</em><a class="headerlink" href="#_CPPv4NK8accessor8get_sizeEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt id="_CPPv4NK8accessor9get_countEv">
+<span id="_CPPv3NK8accessor9get_countEv"></span><span id="_CPPv2NK8accessor9get_countEv"></span><span id="accessor::get_countC"></span>size_t <code class="sig-name descname">get_count</code><span class="sig-paren">(</span><span class="sig-paren">)</span> <em class="property">const</em><a class="headerlink" href="#_CPPv4NK8accessor9get_countEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt id="_CPPv4NK8accessor9get_rangeEv">
+<span id="_CPPv3NK8accessor9get_rangeEv"></span><span id="_CPPv2NK8accessor9get_rangeEv"></span><span id="accessor::get_rangeC"></span><a class="reference internal" href="../parallelism/range.html#_CPPv4I_iE5range" title="range">range</a>&lt;<a class="reference internal" href="#_CPPv4I0_i_N6access4modeE_N6access6targetE_N6access11placeholderEE8accessor" title="accessor::dimensions">dimensions</a>&gt; <code class="sig-name descname">get_range</code><span class="sig-paren">(</span><span class="sig-paren">)</span> <em class="property">const</em><a class="headerlink" href="#_CPPv4NK8accessor9get_rangeEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Template Parameters</dt>
+<dd class="field-odd"><p><strong>dimensions</strong> – </p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+<p>Available only when: <code class="xref cpp cpp-expr docutils literal notranslate"><a class="reference internal" href="#_CPPv4I0_i_N6access4modeE_N6access6targetE_N6access11placeholderEE8accessor" title="accessor::dimensions"><span class="pre">dimensions</span></a> <span class="pre">&gt;</span> <span class="pre">0</span></code></p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt id="_CPPv4NK8accessor10get_offsetEv">
+<span id="_CPPv3NK8accessor10get_offsetEv"></span><span id="_CPPv2NK8accessor10get_offsetEv"></span><span id="accessor::get_offsetC"></span><a class="reference internal" href="../parallelism/id.html#_CPPv4I_iE2id" title="id">id</a>&lt;<a class="reference internal" href="#_CPPv4I0_i_N6access4modeE_N6access6targetE_N6access11placeholderEE8accessor" title="accessor::dimensions">dimensions</a>&gt; <code class="sig-name descname">get_offset</code><span class="sig-paren">(</span><span class="sig-paren">)</span> <em class="property">const</em><a class="headerlink" href="#_CPPv4NK8accessor10get_offsetEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Template Parameters</dt>
+<dd class="field-odd"><p><strong>dimensions</strong> – </p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+<p>Available only when: <code class="xref cpp cpp-expr docutils literal notranslate"><a class="reference internal" href="#_CPPv4I0_i_N6access4modeE_N6access6targetE_N6access11placeholderEE8accessor" title="accessor::dimensions"><span class="pre">dimensions</span></a> <span class="pre">&gt;</span> <span class="pre">0</span></code></p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt id="_CPPv4NK8accessorixE2idI10dimensionsE">
+<span id="_CPPv3NK8accessorixE2idI10dimensionsE"></span><span id="_CPPv2NK8accessorixE2idI10dimensionsE"></span><span id="accessor::subscript-operator__id:dimensions:C"></span><a class="reference internal" href="#_CPPv4I0_i_N6access4modeE_N6access6targetE_N6access11placeholderEE8accessor" title="accessor::dataT">dataT</a> &amp;<code class="sig-name descname">operator[]</code><span class="sig-paren">(</span><a class="reference internal" href="../parallelism/id.html#_CPPv4I_iE2id" title="id">id</a>&lt;<a class="reference internal" href="#_CPPv4I0_i_N6access4modeE_N6access6targetE_N6access11placeholderEE8accessor" title="accessor::dimensions">dimensions</a>&gt; <em>index</em><span class="sig-paren">)</span> <em class="property">const</em><a class="headerlink" href="#_CPPv4NK8accessorixE2idI10dimensionsE" title="Permalink to this definition">¶</a><br /></dt>
+<dt id="_CPPv4NK8accessorixE2idI10dimensionsE">
+<span id="_CPPv3NK8accessorixE2idI10dimensionsE"></span><span id="_CPPv2NK8accessorixE2idI10dimensionsE"></span><a class="reference internal" href="#_CPPv4I0_i_N6access4modeE_N6access6targetE_N6access11placeholderEE8accessor" title="accessor::dataT">dataT</a> <code class="sig-name descname">operator[]</code><span class="sig-paren">(</span><a class="reference internal" href="../parallelism/id.html#_CPPv4I_iE2id" title="id">id</a>&lt;<a class="reference internal" href="#_CPPv4I0_i_N6access4modeE_N6access6targetE_N6access11placeholderEE8accessor" title="accessor::dimensions">dimensions</a>&gt; <em>index</em><span class="sig-paren">)</span> <em class="property">const</em><br /></dt>
+<dt id="_CPPv4NK8accessorixE6size_t">
+<span id="_CPPv3NK8accessorixE6size_t"></span><span id="_CPPv2NK8accessorixE6size_t"></span><span id="accessor::subscript-operator__sC"></span><a class="reference internal" href="#_CPPv4I0_i_N6access4modeE_N6access6targetE_N6access11placeholderEE8accessor" title="accessor::dataT">dataT</a> &amp;<code class="sig-name descname">operator[]</code><span class="sig-paren">(</span>size_t <em>index</em><span class="sig-paren">)</span> <em class="property">const</em><br /></dt>
+<dt id="_CPPv4NK8accessorixE6size_t">
+<span id="_CPPv3NK8accessorixE6size_t"></span><span id="_CPPv2NK8accessorixE6size_t"></span><a class="reference internal" href="#_CPPv4I0_i_N6access4modeE_N6access6targetE_N6access11placeholderEE8accessor" title="accessor::dataT">dataT</a> <code class="sig-name descname">operator[]</code><span class="sig-paren">(</span>size_t <em>index</em><span class="sig-paren">)</span> <em class="property">const</em><a class="headerlink" href="#_CPPv4NK8accessorixE6size_t" title="Permalink to this definition">¶</a><br /></dt>
+<dt id="_CPPv4NK8accessorixE2idI10dimensionsE">
+<span id="_CPPv3NK8accessorixE2idI10dimensionsE"></span><a class="reference internal" href="atomic.html#_CPPv4I0_N6access13address_spaceEE6atomic" title="atomic">atomic</a>&lt;<a class="reference internal" href="#_CPPv4I0_i_N6access4modeE_N6access6targetE_N6access11placeholderEE8accessor" title="accessor::dataT">dataT</a>, access::<a class="reference internal" href="multi-pointer.html#_CPPv4N6access13address_spaceE" title="access::address_space">address_space</a>::<a class="reference internal" href="multi-pointer.html#_CPPv4N6access13address_space12global_spaceE" title="access::address_space::global_space">global_space</a>&gt; <code class="sig-name descname">operator[]</code><span class="sig-paren">(</span><a class="reference internal" href="../parallelism/id.html#_CPPv4I_iE2id" title="id">id</a>&lt;<a class="reference internal" href="#_CPPv4I0_i_N6access4modeE_N6access6targetE_N6access11placeholderEE8accessor" title="accessor::dimensions">dimensions</a>&gt; <em>index</em><span class="sig-paren">)</span> <em class="property">const</em><br /></dt>
+<dt id="_CPPv4NK8accessorixE6size_t">
+<span id="_CPPv3NK8accessorixE6size_t"></span><a class="reference internal" href="atomic.html#_CPPv4I0_N6access13address_spaceEE6atomic" title="atomic">atomic</a>&lt;<a class="reference internal" href="#_CPPv4I0_i_N6access4modeE_N6access6targetE_N6access11placeholderEE8accessor" title="accessor::dataT">dataT</a>, access::<a class="reference internal" href="multi-pointer.html#_CPPv4N6access13address_spaceE" title="access::address_space">address_space</a>::<a class="reference internal" href="multi-pointer.html#_CPPv4N6access13address_space12global_spaceE" title="access::address_space::global_space">global_space</a>&gt; <code class="sig-name descname">operator[]</code><span class="sig-paren">(</span>size_t <em>index</em><span class="sig-paren">)</span> <em class="property">const</em><br /></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>index</strong> – <code class="xref cpp cpp-expr docutils literal notranslate"><span class="pre">size_t</span></code> when <code class="xref cpp cpp-expr docutils literal notranslate"><a class="reference internal" href="#_CPPv4I0_i_N6access4modeE_N6access6targetE_N6access11placeholderEE8accessor" title="accessor::dimensions"><span class="pre">dimensions</span></a> <span class="pre">==</span> <span class="pre">1</span></code> else an <a class="reference internal" href="../parallelism/id.html#_CPPv4I_iE2id" title="id"><code class="xref cpp cpp-type docutils literal notranslate"><span class="pre">id</span></code></a></p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+<p>Describe when reference is not const</p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt id="_CPPv4NK8accessorcvR5dataTEv">
+<span id="_CPPv3NK8accessorcvR5dataTEv"></span><span id="_CPPv2NK8accessorcvR5dataTEv"></span><span id="accessor::castto-dataTR-operatorC"></span><code class="sig-name descname">operator dataT&amp;</code><span class="sig-paren">(</span><span class="sig-paren">)</span> <em class="property">const</em><a class="headerlink" href="#_CPPv4NK8accessorcvR5dataTEv" title="Permalink to this definition">¶</a><br /></dt>
+<dt id="_CPPv4NK8accessorcv5dataTEv">
+<span id="_CPPv3NK8accessorcv5dataTEv"></span><span id="_CPPv2NK8accessorcv5dataTEv"></span><span id="accessor::castto-dataT-operatorC"></span><code class="sig-name descname">operator dataT</code><span class="sig-paren">(</span><span class="sig-paren">)</span> <em class="property">const</em><a class="headerlink" href="#_CPPv4NK8accessorcv5dataTEv" title="Permalink to this definition">¶</a><br /></dt>
+<dt id="_CPPv4NK8accessorcv6atomicI5dataTN6access13address_space12global_spaceEEEv">
+<span id="_CPPv3NK8accessorcv6atomicI5dataTN6access13address_space12global_spaceEEEv"></span><span id="_CPPv2NK8accessorcv6atomicI5dataTN6access13address_space12global_spaceEEEv"></span><span id="accessor::castto-atomic:dataT.access::address_space::global_space:-operatorC"></span><code class="sig-name descname">operator atomic&lt;dataT, access::address_space::global_space&gt;</code><span class="sig-paren">(</span><span class="sig-paren">)</span> <em class="property">const</em><a class="headerlink" href="#_CPPv4NK8accessorcv6atomicI5dataTN6access13address_space12global_spaceEEEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p>
+</dd>
+</dl>
+<p>Describe when reference is not const or atomic</p>
+</dd></dl>
+
+<dl class="cpp function">
+<dt id="_CPPv4NK8accessor11get_pointerEv">
+<span id="_CPPv3NK8accessor11get_pointerEv"></span><span id="_CPPv2NK8accessor11get_pointerEv"></span><span id="accessor::get_pointerC"></span><a class="reference internal" href="#_CPPv4I0_i_N6access4modeE_N6access6targetE_N6access11placeholderEE8accessor" title="accessor::dataT">dataT</a> *<code class="sig-name descname">get_pointer</code><span class="sig-paren">(</span><span class="sig-paren">)</span> <em class="property">const</em><a class="headerlink" href="#_CPPv4NK8accessor11get_pointerEv" title="Permalink to this definition">¶</a><br /></dt>
+<dt id="_CPPv4NK8accessor11get_pointerEv">
+<span id="_CPPv3NK8accessor11get_pointerEv"></span><span id="_CPPv2NK8accessor11get_pointerEv"></span><a class="reference internal" href="multi-pointer.html#_CPPv4I0E10global_ptr" title="global_ptr">global_ptr</a>&lt;<a class="reference internal" href="#_CPPv4I0_i_N6access4modeE_N6access6targetE_N6access11placeholderEE8accessor" title="accessor::dataT">dataT</a>&gt; <code class="sig-name descname">get_pointer</code><span class="sig-paren">(</span><span class="sig-paren">)</span> <em class="property">const</em><br /></dt>
+<dt id="_CPPv4NK8accessor11get_pointerEv">
+<span id="_CPPv3NK8accessor11get_pointerEv"></span><a class="reference internal" href="multi-pointer.html#_CPPv4I0E12constant_ptr" title="constant_ptr">constant_ptr</a>&lt;<a class="reference internal" href="#_CPPv4I0_i_N6access4modeE_N6access6targetE_N6access11placeholderEE8accessor" title="accessor::dataT">dataT</a>&gt; <code class="sig-name descname">get_pointer</code><span class="sig-paren">(</span><span class="sig-paren">)</span> <em class="property">const</em><br /></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p>
+</dd>
+</dl>
+<p>Available only when: <code class="xref cpp cpp-expr docutils literal notranslate"><a class="reference internal" href="#_CPPv4I0_i_N6access4modeE_N6access6targetE_N6access11placeholderEE8accessor" title="accessor::accessTarget"><span class="pre">accessTarget</span></a> <span class="pre">==</span> <span class="pre">access</span><span class="pre">::</span><span class="pre">target</span><span class="pre">::</span><span class="pre">host_buffer</span></code>
+Available only when: accessTarget == access::target::global_buffer
+Available only when: accessTarget == access::target::constant_buffer</p>
+</dd></dl>
+
+</dd></dl>
+
+<div class="admonition-todo admonition" id="id2">
+<p class="admonition-title">Todo</p>
+<p>image accessor</p>
+</div>
+<div class="admonition-todo admonition" id="id3">
+<p class="admonition-title">Todo</p>
+<p>local memory accessor</p>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+    <div class="clearer"></div>
+  </div>
+    <div class="footer">
+      &copy;2020, Intel.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.0.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../../_sources/programming-interface/data/accessor.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

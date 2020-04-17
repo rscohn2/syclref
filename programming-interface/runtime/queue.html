@@ -1,0 +1,283 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Queue &#8212; DPC++ Reference  documentation</title>
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/language_data.js"></script>
+    <link rel="shortcut icon" href="../../_static/favicons.png"/>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Event" href="event.html" />
+    <link rel="prev" title="Device" href="device.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  <div class="document">
+    
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../index.html">DPC++ Reference</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../programming-model/index.html">Programming Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../language/index.html">Language</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Programming Interface</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../index.html#header-file">Header File</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../index.html#namespaces">Namespaces</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html#class-descriptions">Class Descriptions</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="index.html">Runtime Classes</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="device-selector.html">Device Selector</a></li>
+<li class="toctree-l4"><a class="reference internal" href="platform.html">class platform</a></li>
+<li class="toctree-l4"><a class="reference internal" href="context.html">Context</a></li>
+<li class="toctree-l4"><a class="reference internal" href="device.html">Device</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Queue</a></li>
+<li class="toctree-l4"><a class="reference internal" href="event.html">Event</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../data/index.html">Data Access</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../parallelism/index.html">Expressing Parallelism</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../error-handling/index.html">Error Handling</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../stream.html">Stream</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../vec-and-swizzled-vec.html">Vec and Swizzled Vec</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../built-in-types-&amp;amp-functions.html">Built-in Types &amp; Functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../property-interface.html">Property Interface</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../version.html">Version</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../notices-and-disclaimers.html">Notices and Disclaimers</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.html">Programming Interface</a><ul>
+  <li><a href="index.html">Runtime Classes</a><ul>
+      <li>Previous: <a href="device.html" title="previous chapter">Device</a></li>
+      <li>Next: <a href="event.html" title="next chapter">Event</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="queue">
+<span id="id1"></span><h1>Queue<a class="headerlink" href="#queue" title="Permalink to this headline">¶</a></h1>
+<p>A DPC++ <code class="docutils literal notranslate"><span class="pre">queue</span></code> is employed to schedule and execute the command queues
+on the devices.</p>
+<p>Multiple forms of constructors are available with different combinations
+of arguments, including device selectors, devices, contexts, and command
+queue. In addition, an <code class="docutils literal notranslate"><span class="pre">asyc_handler</span></code> can be passed to help
+communicate errors from the devices back to the host.</p>
+<p>The command queue itself executes in a synchronous fashion and therefore
+errors are also synchronous in nature. The actual kernels execute
+asynchronous and therefore errors are handled asynchronously by the
+<code class="docutils literal notranslate"><span class="pre">async_handler</span></code>. Queues can synchronize by calling <code class="docutils literal notranslate"><span class="pre">wait</span></code> and
+<code class="docutils literal notranslate"><span class="pre">wait_and_throw_throw</span></code> member functions.</p>
+<p>Command groups are submitted to the queue object using the submit member
+function.</p>
+<p>A <code class="docutils literal notranslate"><span class="pre">property_list</span></code> can also be passed during construction, which can be
+used to communicate an <code class="docutils literal notranslate"><span class="pre">enable_profiling</span></code> property to the devices.</p>
+<p>A description of a few other member functions include:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">get</span></code> – obtain a <code class="docutils literal notranslate"><span class="pre">cl_command_queue</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">get_context</span></code> – obtain the context associated with the queue</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">get_device</span></code> – obtain the device associated with the queue</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">is_host</span></code> – return if the queue is executing on the host</p></li>
+</ul>
+<dl class="cpp class">
+<dt id="_CPPv45queue">
+<span id="_CPPv35queue"></span><span id="_CPPv25queue"></span><em class="property">class </em><code class="sig-name descname">queue</code><a class="headerlink" href="#_CPPv45queue" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p class="rubric">Constructors</p>
+<dl class="cpp function">
+<dt id="_CPPv4N5queue5queueERK13property_list">
+<span id="_CPPv3N5queue5queueERK13property_list"></span><span id="_CPPv2N5queue5queueERK13property_list"></span><span id="queue::queue__property_listCR"></span><em class="property">explicit</em> <code class="sig-name descname">queue</code><span class="sig-paren">(</span><em class="property">const</em> <a class="reference internal" href="../property-interface.html#_CPPv413property_list" title="property_list">property_list</a> &amp;<em>propList</em> = {}<span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N5queue5queueERK13property_list" title="Permalink to this definition">¶</a><br /></dt>
+<dt id="_CPPv4N5queue5queueERK13async_handlerRK13property_list">
+<span id="_CPPv3N5queue5queueERK13async_handlerRK13property_list"></span><span id="_CPPv2N5queue5queueERK13async_handlerRK13property_list"></span><span id="queue::queue__async_handlerCR.property_listCR"></span><em class="property">explicit</em> <code class="sig-name descname">queue</code><span class="sig-paren">(</span><em class="property">const</em> <a class="reference internal" href="../error-handling/exception.html#_CPPv413async_handler" title="async_handler">async_handler</a> &amp;<em>asyncHandler</em>, <em class="property">const</em> <a class="reference internal" href="../property-interface.html#_CPPv413property_list" title="property_list">property_list</a> &amp;<em>propList</em> = {}<span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N5queue5queueERK13async_handlerRK13property_list" title="Permalink to this definition">¶</a><br /></dt>
+<dt id="_CPPv4N5queue5queueERK15device_selectorRK13property_list">
+<span id="_CPPv3N5queue5queueERK15device_selectorRK13property_list"></span><span id="_CPPv2N5queue5queueERK15device_selectorRK13property_list"></span><span id="queue::queue__device_selectorCR.property_listCR"></span><em class="property">explicit</em> <code class="sig-name descname">queue</code><span class="sig-paren">(</span><em class="property">const</em> device_selector &amp;<em>deviceSelector</em>, <em class="property">const</em> <a class="reference internal" href="../property-interface.html#_CPPv413property_list" title="property_list">property_list</a> &amp;<em>propList</em> = {}<span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N5queue5queueERK15device_selectorRK13property_list" title="Permalink to this definition">¶</a><br /></dt>
+<dt id="_CPPv4N5queue5queueERK15device_selectorRK13async_handlerRK13property_list">
+<span id="_CPPv3N5queue5queueERK15device_selectorRK13async_handlerRK13property_list"></span><span id="_CPPv2N5queue5queueERK15device_selectorRK13async_handlerRK13property_list"></span><span id="queue::queue__device_selectorCR.async_handlerCR.property_listCR"></span><em class="property">explicit</em> <code class="sig-name descname">queue</code><span class="sig-paren">(</span><em class="property">const</em> device_selector &amp;<em>deviceSelector</em>, <em class="property">const</em> <a class="reference internal" href="../error-handling/exception.html#_CPPv413async_handler" title="async_handler">async_handler</a> &amp;<em>asyncHandler</em>, <em class="property">const</em> <a class="reference internal" href="../property-interface.html#_CPPv413property_list" title="property_list">property_list</a> &amp;<em>propList</em> = {}<span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N5queue5queueERK15device_selectorRK13async_handlerRK13property_list" title="Permalink to this definition">¶</a><br /></dt>
+<dt id="_CPPv4N5queue5queueERK6deviceRK13property_list">
+<span id="_CPPv3N5queue5queueERK6deviceRK13property_list"></span><span id="_CPPv2N5queue5queueERK6deviceRK13property_list"></span><span id="queue::queue__deviceCR.property_listCR"></span><em class="property">explicit</em> <code class="sig-name descname">queue</code><span class="sig-paren">(</span><em class="property">const</em> <a class="reference internal" href="device.html#_CPPv46device" title="device">device</a> &amp;<em>syclDevice</em>, <em class="property">const</em> <a class="reference internal" href="../property-interface.html#_CPPv413property_list" title="property_list">property_list</a> &amp;<em>propList</em> = {}<span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N5queue5queueERK6deviceRK13property_list" title="Permalink to this definition">¶</a><br /></dt>
+<dt id="_CPPv4N5queue5queueERK6deviceRK13async_handlerRK13property_list">
+<span id="_CPPv3N5queue5queueERK6deviceRK13async_handlerRK13property_list"></span><span id="_CPPv2N5queue5queueERK6deviceRK13async_handlerRK13property_list"></span><span id="queue::queue__deviceCR.async_handlerCR.property_listCR"></span><em class="property">explicit</em> <code class="sig-name descname">queue</code><span class="sig-paren">(</span><em class="property">const</em> <a class="reference internal" href="device.html#_CPPv46device" title="device">device</a> &amp;<em>syclDevice</em>, <em class="property">const</em> <a class="reference internal" href="../error-handling/exception.html#_CPPv413async_handler" title="async_handler">async_handler</a> &amp;<em>asyncHandler</em>, <em class="property">const</em> <a class="reference internal" href="../property-interface.html#_CPPv413property_list" title="property_list">property_list</a> &amp;<em>propList</em> = {}<span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N5queue5queueERK6deviceRK13async_handlerRK13property_list" title="Permalink to this definition">¶</a><br /></dt>
+<dt id="_CPPv4N5queue5queueERK7contextRK15device_selectorRK13property_list">
+<span id="_CPPv3N5queue5queueERK7contextRK15device_selectorRK13property_list"></span><span id="_CPPv2N5queue5queueERK7contextRK15device_selectorRK13property_list"></span><span id="queue::queue__contextCR.device_selectorCR.property_listCR"></span><em class="property">explicit</em> <code class="sig-name descname">queue</code><span class="sig-paren">(</span><em class="property">const</em> <a class="reference internal" href="context.html#_CPPv47context" title="context">context</a> &amp;<em>syclContext</em>, <em class="property">const</em> device_selector &amp;<em>deviceSelector</em>, <em class="property">const</em> <a class="reference internal" href="../property-interface.html#_CPPv413property_list" title="property_list">property_list</a> &amp;<em>propList</em> = {}<span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N5queue5queueERK7contextRK15device_selectorRK13property_list" title="Permalink to this definition">¶</a><br /></dt>
+<dt id="_CPPv4N5queue5queueERK7contextRK15device_selectorRK13async_handlerRK13property_list">
+<span id="_CPPv3N5queue5queueERK7contextRK15device_selectorRK13async_handlerRK13property_list"></span><span id="_CPPv2N5queue5queueERK7contextRK15device_selectorRK13async_handlerRK13property_list"></span><span id="queue::queue__contextCR.device_selectorCR.async_handlerCR.property_listCR"></span><em class="property">explicit</em> <code class="sig-name descname">queue</code><span class="sig-paren">(</span><em class="property">const</em> <a class="reference internal" href="context.html#_CPPv47context" title="context">context</a> &amp;<em>syclContext</em>, <em class="property">const</em> device_selector &amp;<em>deviceSelector</em>, <em class="property">const</em> <a class="reference internal" href="../error-handling/exception.html#_CPPv413async_handler" title="async_handler">async_handler</a> &amp;<em>asyncHandler</em>, <em class="property">const</em> <a class="reference internal" href="../property-interface.html#_CPPv413property_list" title="property_list">property_list</a> &amp;<em>propList</em> = {}<span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N5queue5queueERK7contextRK15device_selectorRK13async_handlerRK13property_list" title="Permalink to this definition">¶</a><br /></dt>
+<dt id="_CPPv4N5queue5queueERK7contextRK6deviceRK13property_list">
+<span id="_CPPv3N5queue5queueERK7contextRK6deviceRK13property_list"></span><span id="_CPPv2N5queue5queueERK7contextRK6deviceRK13property_list"></span><span id="queue::queue__contextCR.deviceCR.property_listCR"></span><em class="property">explicit</em> <code class="sig-name descname">queue</code><span class="sig-paren">(</span><em class="property">const</em> <a class="reference internal" href="context.html#_CPPv47context" title="context">context</a> &amp;<em>syclContext</em>, <em class="property">const</em> <a class="reference internal" href="device.html#_CPPv46device" title="device">device</a> &amp;<em>syclDevice</em>, <em class="property">const</em> <a class="reference internal" href="../property-interface.html#_CPPv413property_list" title="property_list">property_list</a> &amp;<em>propList</em> = {}<span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N5queue5queueERK7contextRK6deviceRK13property_list" title="Permalink to this definition">¶</a><br /></dt>
+<dt id="_CPPv4N5queue5queueERK7contextRK6deviceRK13async_handlerRK13property_list">
+<span id="_CPPv3N5queue5queueERK7contextRK6deviceRK13async_handlerRK13property_list"></span><span id="_CPPv2N5queue5queueERK7contextRK6deviceRK13async_handlerRK13property_list"></span><span id="queue::queue__contextCR.deviceCR.async_handlerCR.property_listCR"></span><em class="property">explicit</em> <code class="sig-name descname">queue</code><span class="sig-paren">(</span><em class="property">const</em> <a class="reference internal" href="context.html#_CPPv47context" title="context">context</a> &amp;<em>syclContext</em>, <em class="property">const</em> <a class="reference internal" href="device.html#_CPPv46device" title="device">device</a> &amp;<em>syclDevice</em>, <em class="property">const</em> <a class="reference internal" href="../error-handling/exception.html#_CPPv413async_handler" title="async_handler">async_handler</a> &amp;<em>asyncHandler</em>, <em class="property">const</em> <a class="reference internal" href="../property-interface.html#_CPPv413property_list" title="property_list">property_list</a> &amp;<em>propList</em> = {}<span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N5queue5queueERK7contextRK6deviceRK13async_handlerRK13property_list" title="Permalink to this definition">¶</a><br /></dt>
+<dt id="_CPPv4N5queue5queueE16cl_command_queueRK7contextRK13async_handler">
+<span id="_CPPv3N5queue5queueE16cl_command_queueRK7contextRK13async_handler"></span><span id="_CPPv2N5queue5queueE16cl_command_queueRK7contextRK13async_handler"></span><span id="queue::queue__cl_command_queue.contextCR.async_handlerCR"></span><em class="property">explicit</em> <code class="sig-name descname">queue</code><span class="sig-paren">(</span>cl_command_queue <em>clQueue</em>, <em class="property">const</em> <a class="reference internal" href="context.html#_CPPv47context" title="context">context</a> &amp;<em>syclContext</em>, <em class="property">const</em> <a class="reference internal" href="../error-handling/exception.html#_CPPv413async_handler" title="async_handler">async_handler</a> &amp;<em>asyncHandler</em> = {}<span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N5queue5queueE16cl_command_queueRK7contextRK13async_handler" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<p class="rubric">Property Interface Members</p>
+<dl class="cpp function">
+<dt id="_CPPv4NK5queue3getEv">
+<span id="_CPPv3NK5queue3getEv"></span><span id="_CPPv2NK5queue3getEv"></span><span id="queue::getC"></span>cl_command_queue <code class="sig-name descname">get</code><span class="sig-paren">(</span><span class="sig-paren">)</span> <em class="property">const</em><a class="headerlink" href="#_CPPv4NK5queue3getEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt id="_CPPv4NK5queue11get_contextEv">
+<span id="_CPPv3NK5queue11get_contextEv"></span><span id="_CPPv2NK5queue11get_contextEv"></span><span id="queue::get_contextC"></span><a class="reference internal" href="context.html#_CPPv47context" title="context">context</a> <code class="sig-name descname">get_context</code><span class="sig-paren">(</span><span class="sig-paren">)</span> <em class="property">const</em><a class="headerlink" href="#_CPPv4NK5queue11get_contextEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt id="_CPPv4NK5queue10get_deviceEv">
+<span id="_CPPv3NK5queue10get_deviceEv"></span><span id="_CPPv2NK5queue10get_deviceEv"></span><span id="queue::get_deviceC"></span><a class="reference internal" href="device.html#_CPPv46device" title="device">device</a> <code class="sig-name descname">get_device</code><span class="sig-paren">(</span><span class="sig-paren">)</span> <em class="property">const</em><a class="headerlink" href="#_CPPv4NK5queue10get_deviceEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt id="_CPPv4NK5queue7is_hostEv">
+<span id="_CPPv3NK5queue7is_hostEv"></span><span id="_CPPv2NK5queue7is_hostEv"></span><span id="queue::is_hostC"></span>bool <code class="sig-name descname">is_host</code><span class="sig-paren">(</span><span class="sig-paren">)</span> <em class="property">const</em><a class="headerlink" href="#_CPPv4NK5queue7is_hostEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt id="_CPPv4I_N4info5queueEENK5queue8get_infoEN4info12param_traitsIN4info5queueE5paramE11return_typeEv">
+<span id="_CPPv3I_N4info5queueEENK5queue8get_infoEv"></span><span id="_CPPv2I_N4info5queueEENK5queue8get_infoEv"></span>template&lt;info::queue <code class="sig-name descname">param</code>&gt;<br /><em class="property">typename</em> info::param_traits&lt;info::queue, <a class="reference internal" href="#_CPPv4I_N4info5queueEENK5queue8get_infoEN4info12param_traitsIN4info5queueE5paramE11return_typeEv" title="queue::get_info::param">param</a>&gt;::return_type <code class="sig-name descname">get_info</code><span class="sig-paren">(</span><span class="sig-paren">)</span> <em class="property">const</em><a class="headerlink" href="#_CPPv4I_N4info5queueEENK5queue8get_infoEN4info12param_traitsIN4info5queueE5paramE11return_typeEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Template Parameters</dt>
+<dd class="field-odd"><p><strong>param</strong> – </p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt id="_CPPv4I0EN5queue6submitE5event1T">
+<span id="_CPPv3I0EN5queue6submitE1T"></span><span id="_CPPv2I0EN5queue6submitE1T"></span>template&lt;typename <code class="sig-name descname">T</code>&gt;<br /><a class="reference internal" href="event.html#_CPPv45event" title="event">event</a> <code class="sig-name descname">submit</code><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4I0EN5queue6submitE5event1T" title="queue::submit::T">T</a> <em>cgf</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0EN5queue6submitE5event1T" title="Permalink to this definition">¶</a><br /></dt>
+<dt id="_CPPv4I0EN5queue6submitE5event1TRK5queue">
+<span id="_CPPv3I0EN5queue6submitE1TRK5queue"></span><span id="_CPPv2I0EN5queue6submitE1TRK5queue"></span>template&lt;typename <code class="sig-name descname">T</code>&gt;<br /><a class="reference internal" href="event.html#_CPPv45event" title="event">event</a> <code class="sig-name descname">submit</code><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv4I0EN5queue6submitE5event1TRK5queue" title="queue::submit::T">T</a> <em>cgf</em>, <em class="property">const</em> <a class="reference internal" href="#_CPPv45queue" title="queue">queue</a> &amp;<em>secondaryQueue</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4I0EN5queue6submitE5event1TRK5queue" title="Permalink to this definition">¶</a><br /></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Template Parameters</dt>
+<dd class="field-odd"><p><strong>T</strong> – </p>
+</dd>
+<dt class="field-even">Parameters</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>cgf</strong> – </p></li>
+<li><p><strong>secondaryQueue</strong> – </p></li>
+</ul>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="cpp function">
+<dt id="_CPPv4N5queue4waitEv">
+<span id="_CPPv3N5queue4waitEv"></span><span id="_CPPv2N5queue4waitEv"></span><span id="queue::wait"></span>void <code class="sig-name descname">wait</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N5queue4waitEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt id="_CPPv4N5queue14wait_and_throwEv">
+<span id="_CPPv3N5queue14wait_and_throwEv"></span><span id="_CPPv2N5queue14wait_and_throwEv"></span><span id="queue::wait_and_throw"></span>void <code class="sig-name descname">wait_and_throw</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N5queue14wait_and_throwEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+<dl class="cpp function">
+<dt id="_CPPv4N5queue18throw_asynchronousEv">
+<span id="_CPPv3N5queue18throw_asynchronousEv"></span><span id="_CPPv2N5queue18throw_asynchronousEv"></span><span id="queue::throw_asynchronous"></span>void <code class="sig-name descname">throw_asynchronous</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv4N5queue18throw_asynchronousEv" title="Permalink to this definition">¶</a><br /></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+    <div class="clearer"></div>
+  </div>
+    <div class="footer">
+      &copy;2020, Intel.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.0.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../../_sources/programming-interface/runtime/queue.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

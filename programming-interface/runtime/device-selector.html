@@ -1,0 +1,214 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Device Selector &#8212; DPC++ Reference  documentation</title>
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/language_data.js"></script>
+    <link rel="shortcut icon" href="../../_static/favicons.png"/>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="class platform" href="platform.html" />
+    <link rel="prev" title="Runtime Classes" href="index.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  <div class="document">
+    
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../index.html">DPC++ Reference</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../programming-model/index.html">Programming Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../language/index.html">Language</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Programming Interface</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../index.html#header-file">Header File</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../index.html#namespaces">Namespaces</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html#class-descriptions">Class Descriptions</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="index.html">Runtime Classes</a><ul class="current">
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Device Selector</a></li>
+<li class="toctree-l4"><a class="reference internal" href="platform.html">class platform</a></li>
+<li class="toctree-l4"><a class="reference internal" href="context.html">Context</a></li>
+<li class="toctree-l4"><a class="reference internal" href="device.html">Device</a></li>
+<li class="toctree-l4"><a class="reference internal" href="queue.html">Queue</a></li>
+<li class="toctree-l4"><a class="reference internal" href="event.html">Event</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../data/index.html">Data Access</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../parallelism/index.html">Expressing Parallelism</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../error-handling/index.html">Error Handling</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../stream.html">Stream</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../vec-and-swizzled-vec.html">Vec and Swizzled Vec</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../built-in-types-&amp;amp-functions.html">Built-in Types &amp; Functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../property-interface.html">Property Interface</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../version.html">Version</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../notices-and-disclaimers.html">Notices and Disclaimers</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.html">Programming Interface</a><ul>
+  <li><a href="index.html">Runtime Classes</a><ul>
+      <li>Previous: <a href="index.html" title="previous chapter">Runtime Classes</a></li>
+      <li>Next: <a href="platform.html" title="next chapter">class platform</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="device-selector">
+<span id="id1"></span><h1>Device Selector<a class="headerlink" href="#device-selector" title="Permalink to this headline">¶</a></h1>
+<p>The DPC++ <code class="docutils literal notranslate"><span class="pre">device_selector</span></code> class enables the runtime selection of a
+particular device to execute kernels based upon user-provided
+heuristics. Construction is either via a zero argument constructor or by
+providing a reference to another <code class="docutils literal notranslate"><span class="pre">device_selector</span></code> object. An instance
+of a <code class="docutils literal notranslate"><span class="pre">device_selector</span></code> can also be assigned to another instance.</p>
+<p>The following code sample shows use of the standard <code class="docutils literal notranslate"><span class="pre">device_selectors</span></code>
+and a derived <code class="docutils literal notranslate"><span class="pre">device_selector</span></code> that employs a device selector
+heuristic. In the example, the selected device prioritizes a CPU device
+because the integer rating returned is higher than if the device is a
+GPU or other accelerator.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#include &lt;CL/sycl.hpp&gt;</span>
+<span class="n">using</span> <span class="n">namespace</span> <span class="n">cl</span><span class="p">::</span><span class="n">sycl</span><span class="p">;</span>
+
+
+<span class="k">class</span> <span class="nc">my_device_selector</span> <span class="p">:</span> <span class="n">public</span> <span class="n">device_selector</span> <span class="p">{</span>
+<span class="n">public</span><span class="p">:</span>
+  <span class="nb">int</span> <span class="n">operator</span><span class="p">()(</span><span class="n">const</span> <span class="n">device</span> <span class="o">&amp;</span><span class="n">dev</span><span class="p">)</span> <span class="n">const</span> <span class="n">override</span><span class="p">{</span>
+    <span class="nb">int</span> <span class="n">rating</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">dev</span><span class="o">.</span><span class="n">is_gpu</span><span class="p">())</span> <span class="n">rating</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+    <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">dev</span><span class="o">.</span><span class="n">is_cpu</span><span class="p">())</span> <span class="n">rating</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span>
+    <span class="k">return</span> <span class="n">rating</span><span class="p">;</span>
+<span class="p">};</span>
+<span class="p">};</span>
+<span class="nb">int</span> <span class="n">main</span><span class="p">()</span> <span class="p">{</span>
+
+
+  <span class="n">default_selector</span> <span class="n">d_selector</span><span class="p">;</span>
+  <span class="n">queue</span> <span class="n">Queue</span><span class="p">(</span><span class="n">d_selector</span><span class="p">);</span>
+
+
+  <span class="n">cpu_selector</span> <span class="n">d_selector2</span><span class="p">;</span>
+  <span class="n">queue</span> <span class="n">Queue2</span><span class="p">(</span><span class="n">d_selector2</span><span class="p">);</span>
+
+
+  <span class="n">std</span><span class="p">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s2">&quot;Executing on &quot;</span>
+    <span class="o">&lt;&lt;</span> <span class="n">Queue</span><span class="o">.</span><span class="n">get_device</span><span class="p">()</span><span class="o">.</span><span class="n">get_info</span><span class="o">&lt;</span><span class="n">info</span><span class="p">::</span><span class="n">device</span><span class="p">::</span><span class="n">name</span><span class="o">&gt;</span><span class="p">()</span>
+    <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="p">::</span><span class="n">endl</span><span class="p">;</span>
+  <span class="n">std</span><span class="p">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s2">&quot;Executing on &quot;</span>
+    <span class="o">&lt;&lt;</span> <span class="n">Queue2</span><span class="o">.</span><span class="n">get_device</span><span class="p">()</span><span class="o">.</span><span class="n">get_info</span><span class="o">&lt;</span><span class="n">info</span><span class="p">::</span><span class="n">device</span><span class="p">::</span><span class="n">name</span><span class="o">&gt;</span><span class="p">()</span>
+    <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="p">::</span><span class="n">endl</span><span class="p">;</span>
+
+
+  <span class="n">device</span> <span class="n">device1</span> <span class="o">=</span> <span class="n">Queue</span><span class="o">.</span><span class="n">get_device</span><span class="p">()</span> <span class="p">;</span>
+  <span class="n">device</span> <span class="n">device2</span> <span class="o">=</span> <span class="n">Queue2</span><span class="o">.</span><span class="n">get_device</span><span class="p">()</span> <span class="p">;</span>
+
+
+  <span class="n">my_device_selector</span> <span class="n">h_selector</span><span class="p">;</span>
+  <span class="n">queue</span> <span class="n">Queue3</span><span class="p">(</span><span class="n">h_selector</span><span class="p">);</span>
+
+
+  <span class="n">std</span><span class="p">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s2">&quot;Executing on &quot;</span>
+    <span class="o">&lt;&lt;</span> <span class="n">Queue3</span><span class="o">.</span><span class="n">get_device</span><span class="p">()</span><span class="o">.</span><span class="n">get_info</span><span class="o">&lt;</span><span class="n">info</span><span class="p">::</span><span class="n">device</span><span class="p">::</span><span class="n">name</span><span class="o">&gt;</span><span class="p">()</span>
+    <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="p">::</span><span class="n">endl</span><span class="p">;</span>
+
+
+  <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>A brief description of the key lines in the sample code is as follows:</p>
+<ul>
+<li><p>Lines 15-16 - use the <code class="docutils literal notranslate"><span class="pre">default_selector</span></code> to select a device to
+initialize a command queue</p>
+<p><a class="reference internal" href="../../_images/GUID-59C34DBD-2FF9-4558-B6D0-EC8545FC2147-low.png"><img alt="image0" src="../../_images/GUID-59C34DBD-2FF9-4558-B6D0-EC8545FC2147-low.png" style="width: 622px; height: 40px;" /></a></p>
+</li>
+<li><p>Lines 18-19 - use the <code class="docutils literal notranslate"><span class="pre">cpu_selector</span></code> to select a device to
+initialize a command queue</p>
+<p><a class="reference internal" href="../../_images/GUID-BD535AEF-87BC-4A7C-94AA-00BD6C00F26D-low.png"><img alt="image1" src="../../_images/GUID-BD535AEF-87BC-4A7C-94AA-00BD6C00F26D-low.png" style="width: 622px; height: 40px;" /></a></p>
+</li>
+<li><p>Lines 4-11 and lines 31-32 - use a derived <code class="docutils literal notranslate"><span class="pre">device_selector</span></code> and a
+selection heuristic</p>
+<p><a class="reference internal" href="../../_images/GUID-72713C3C-FC00-471C-A822-3CEB1ABB330D-low.png"><img alt="image2" src="../../_images/GUID-72713C3C-FC00-471C-A822-3CEB1ABB330D-low.png" style="width: 622px; height: 262px;" /></a></p>
+</li>
+</ul>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+    <div class="clearer"></div>
+  </div>
+    <div class="footer">
+      &copy;2020, Intel.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.0.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../../_sources/programming-interface/runtime/device-selector.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
